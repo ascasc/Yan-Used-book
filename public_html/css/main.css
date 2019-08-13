@@ -1,0 +1,153 @@
+#header{
+  position: fixed;
+  top:0;
+  width: 100%;
+  padding: 20px 50px 5px 50px;
+  margin-bottom: 20vh;
+  border-bottom: 2px dashed #ccc;
+  background: white;
+  z-index: 1;
+}
+#header a{
+  text-decoration: none;
+}
+#header .logo,
+#header nav li{
+  float: left;
+}
+#header .logo{
+  color: #777;
+  font-size: 2rem;
+  font-weight: bold;
+  border:5px solid #ccc;
+  border-radius: 50%;
+  padding: 0 15px;
+  cursor: pointer;
+}
+#header .logo:hover{
+  border:5px solid #777;
+}
+#header nav li{
+  margin: 0 10px;
+  padding: 0 20px;
+}
+#header nav li:hover{
+  background: green;
+  color: white;
+  border-radius: 40%;
+  cursor: pointer;
+}
+#header nav{
+  float: right;
+  line-height:50px
+}
+#header ul{
+  list-style-type: none;
+}
+
+#slider{
+  position: relative;
+  margin-top: 2px;  
+}
+#slider img{
+  width: 100%;
+  height: 100vh;
+}
+#slider h1{
+  position: absolute;
+  top:50vh;
+  right:40%;
+  color: white;
+}
+
+#login.open,
+#signup.open,
+#signu-success.open{
+  display: block;
+}
+#login,
+#signup{
+  display: none;
+  
+}
+.login-signup{
+  position: fixed;
+  top: -20px;
+  right: 35%;
+  width: 500px;
+  background: #fff;
+  padding: 50px 120px;
+  margin: 0 auto;
+  margin-top: 10%;
+  border-radius:5%;
+  border: 1px solid #eee;
+}
+.login-signup .close{
+  position: relative;
+  top:-40px;
+  right:-100px;
+}
+.login-signup h3{
+  text-align: center;
+  margin-bottom: 30px;
+}
+.error-msg.open{
+  display: block;
+}
+.error-msg{
+  display: none;
+}
+.error-msg .alert-danger{
+  border: none;
+  text-align: center;
+}
+.login-signup input{
+  padding: 5px 35px;
+  height: 40px;
+  font-weight: 200;
+  margin-bottom: 14px;
+}
+.login-signup .button{
+  text-align: center;
+  margin-top: 10px;
+}
+.login-signup .button button{
+  border: none;
+  background: green;
+  padding: 5px 20px;
+  border-radius: 40%;
+  font-size: 20px;
+  cursor: pointer;
+}
+.login-signup .button button:hover{
+  color: white;
+}
+#signu-success{
+  display: none;
+  position: absolute;
+  top: 20%;
+  right: 43%;
+  width: 200px;
+  padding: 10px;
+  background: white;
+  border-radius: 5px;
+  border: 1px solid #eee;
+  text-align: center;
+  z-index: 1;
+}
+#signu-success .button{
+  width: 40%;
+  float: none;
+  margin: 0 auto;
+  font-size: 1rem;
+  color: black;
+  background: green;
+  padding: 5px;
+  text-shadow: none;
+  opacity: 1;
+  border-radius: 10px;
+  cursor: pointer;
+}
+#signu-success .button:hover{
+  color: white;
+}
