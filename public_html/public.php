@@ -1,6 +1,5 @@
 <?php
 include('../../db.php');
-include('../../../db.php');
 header('Content-Type: application/json; charset=utf-8');
 try{
     $pdo = new PDO("mysql:host=$db[host];dbname=$db[dbname];port=$db[port];charset=$db[charset]",$db['username'],$db['password']);
@@ -8,6 +7,9 @@ try{
     echo "Database connection failed.";
     exit;
 }
+
+$email=filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);
+
 $sql = 'SELECT name FROM customer_data WHERE name=:name';
 $statement=$pdo->prepare($sql);
 $statement->bindValue(':name', $_POST['name'], PDO::PARAM_STR);

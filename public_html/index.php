@@ -14,15 +14,20 @@
     <h1>歡迎來到 Yan二手書店</h1>
   </div>
   <div id="login" class="login-signup">
-    <div class="close">x</div>
-      <h3>Yan-二手書店登入</h3>
-      <label>Email</label><br>
-      <input type="email" class="email"><br>
-      <label>密碼</label><br>
-      <input type="password" class="password">
-      <div class="button">
-        <button>登入</button>
+    <form>
+      <div class="close">x</div>
+        <h3>Yan-二手書店登入</h3>
+        <div class="error-msg">
+			    <div class="alert alert-danger">error</div>
+		    </div>
+        <label>Email</label><br>
+        <input type="email" name="email"><br>
+        <label>密碼</label><br>
+        <input type="password" name="password">
+        <div class="button">
+          <button>登入</button>
       </div>
+    </form>
   </div>
   <div id="signup" class="login-signup">
     <form>
@@ -38,7 +43,7 @@
       <label>手機</label><br>
       <input type="text" name="phone"><br>
       <label>密碼</label><br>
-      <input type="text" name="password">
+      <input type="password" name="password">
       <label>確認密碼</label><br>
       <input type="password" name="two_password" class="two_password">
       <div class="button">
