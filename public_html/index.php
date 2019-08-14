@@ -10,7 +10,7 @@
     </nav>
   </div>
   <div id="slider">
-    <img src="http://lorempixel.com/1200/1200/" alt="">
+    <img src="img/bg.jpeg" alt="bg.jpeg">
     <h1>歡迎來到 Yan二手書店</h1>
   </div>
   <div id="login" class="login-signup">
