@@ -1,24 +1,6 @@
 <?php
-include('../../../db.php');
+include('public_signup_login.php');
 header('Content-Type: application/json; charset=utf-8');
-try{
-    $pdo = new PDO("mysql:host=$db[host];dbname=$db[dbname];port=$db[port];charset=$db[charset]",$db['username'],$db['password']);
-}catch(PDOException $e){
-    echo "Database connection failed.";
-    exit;
-}
-function msg_error($msg){
-    http_response_code(400);
-    echo $msg;
-}
-
-$email=filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);//驗證email
-//Email是否在資料存在
-$sql = 'SELECT email, password FROM customer_data WHERE email=:email';
-$statement=$pdo->prepare($sql);
-$statement->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
-$statement->execute();
-$fetch=$statement->fetch(PDO::FETCH_ASSOC);
 
 if(empty($_POST['email'])){//Email不可為空
     msg_error('Email不可為空');
@@ -28,9 +10,27 @@ if(empty($_POST['email'])){//Email不可為空
     msg_error('Email錯誤');
 }else if(empty($_POST['password']) || preg_match('/\s/',$_POST['password'])){//密碼不可為空
     msg_error('密碼不可為空');
-}else if(password_verify($_POST['password'], $fetch['password'])){
-    var_dump('成功');
+}else if(!preg_match('/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8}/', $_POST['password'])){//密碼需大小寫八個以上
+    msg_error('密碼需大小寫八個以上');
+}else if($fetch['email'] && password_verify($_POST['password'], $fetch['password'])){
+    
+    //Email與密碼是否在資料庫存在
+    $sql = 'SELECT * FROM customer_data WHERE email=:email';
+    $statement=$pdo->prepare($sql);
+    $statement->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
+    $statement->execute();
+    $fetchAll=$statement->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($fetchAll as $key => $row) {
+        $_SESSION['customer'] = [
+            'name'=>$row['name'],
+            'email'=>$row['email'],
+            'phone'=>$row['phone'],
+            'password'=>$row['password']
+        ];
+    }
+    echo json_encode(['name'=>'登入成功']); 
+    
 }else{
-    var_dump('失敗');
+    msg_error('密碼錯誤');
 }
 ?>

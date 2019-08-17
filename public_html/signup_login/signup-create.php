@@ -16,12 +16,14 @@ if(empty($_POST['name'])){//姓名不可為空
     msg_error('Email不可為空');
 }else if(!$email){//Email格式錯誤
     msg_error('Email格式錯誤');
-}else if($_POST['email'] == $fetch['email']){//此Email已存在
+}else if($_POST['email'] == $fetchAll['email']){//此Email已存在
     msg_error('此Email已存在');
 }else if(empty($_POST['phone'])){//手機不可為空
     msg_error('手機不可為空');
 }else if(!preg_match('/^09[0-9]{8}$/',$_POST['phone'])){//手機格式錯誤
     msg_error('手機格式錯誤');
+}else if($_POST['phone'] == $phone_fetch['phone']){//此手機號碼已存在
+    msg_error('此手機號碼已存在');
 }else if(empty($_POST['password']) || preg_match('/\s/',$_POST['password'])){//密碼不可為空
     msg_error('密碼不可為空');
 }else if(!preg_match('/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8}/', $_POST['password'])){//密碼需大小寫八個以上
@@ -37,10 +39,11 @@ if(empty($_POST['name'])){//姓名不可為空
         ['cost' => 12]
       );
     http_response_code(200);
-    $sql = 'INSERT INTO customer_data (name,email,password) VALUES(:name,:email,:password)';
+    $sql = 'INSERT INTO customer_data (name,email, phone, password) VALUES(:name, :email, :phone, :password)';
     $statement = $pdo->prepare($sql);
     $statement->bindValue(':name', $_POST['name'], PDO::PARAM_STR);
     $statement->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
+    $statement->bindValue(':phone', $_POST['phone'], PDO::PARAM_STR);
     $statement->bindValue(':password', password_hash($_POST['password'], PASSWORD_BCRYPT));
     $result =$statement->execute();
     if($result){

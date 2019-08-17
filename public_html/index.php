@@ -24,9 +24,8 @@
         <input type="email" name="email"><br>
         <label>密碼</label><br>
         <input type="password" name="password">
-        <div class="button">
-          <button>登入</button>
-      </div>
+        <div class="button">登入</div><br>
+      <center><a href="#">忘記密碼?</a></center>
     </form>
   </div>
   <div id="signup" class="login-signup">
@@ -46,9 +45,7 @@
       <input type="password" name="password">
       <label>確認密碼</label><br>
       <input type="password" name="two_password" class="two_password">
-      <div class="button">
-        <button>註冊</button>
-      </div>
+      <div class="button">註冊</div>
     </form>
     
   </div>

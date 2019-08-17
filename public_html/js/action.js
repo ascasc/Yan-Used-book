@@ -41,15 +41,15 @@ $(document).ready(function(){
         $(this).siblings('input').val('');
         public_signup_login.alert_msg_off();
     })
-      .on('click', '#signup .button button', function(e) {//註冊送出並且驗證
+      .on('click', '#signup .button', function(e) {//註冊送出並且驗證
         e.preventDefault();
         var data=$('#signup.login-signup').find('form').serialize();
         $.post("signup_login/signup-create.php", data, function(){})
-          .done(function(data, textStatus, jqXHR) {
+          .done(function(data, textStatus, jqXHR) {//註冊成功回傳到HTML成功的訊息
             $(signup.el).find('.close').click();
             public_signup_login.alert_msg__success(data.name);
         })
-          .fail(function(xhr, textStatus, errorThrown){
+          .fail(function(xhr, textStatus, errorThrown){//註冊錯誤回傳到HTML錯誤訊息
             if(errorThrown !='Bad Request'){
               public_signup_login.alert_msg_off();
             }else{
@@ -57,15 +57,15 @@ $(document).ready(function(){
             }
       })
     })
-      .on('click', '#login .button button', function(e) {//註冊送出並且驗證
+      .on('click', '#login .button', function(e) {//登入送出並且驗證
       e.preventDefault();
       var data=$('#login.login-signup').find('form').serialize();
       $.post("signup_login/login.php", data, function(){})
-        .done(function(data, textStatus, jqXHR) {
+        .done(function(data, textStatus, jqXHR) {//登入成功回傳到HTML成功的訊息
           $(signup.el).find('.close').click();
           public_signup_login.alert_msg__success(data.name);
       })
-        .fail(function(xhr, textStatus, errorThrown){
+        .fail(function(xhr, textStatus, errorThrown){//登入錯誤回傳到HTML錯誤訊息
           if(errorThrown !='Bad Request'){
             public_signup_login.alert_msg_off();
           }else{
