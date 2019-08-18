@@ -11,14 +11,13 @@ try{
 
 $email=filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);//驗證email
 
-function SELECT_name(){
-    //姓名是否在資料庫存在
+//姓名是否在資料庫存在
     $sql = 'SELECT name FROM customer_data WHERE name=:name';
     $statement=$pdo->prepare($sql);
     $statement->bindValue(':name', $_POST['name'], PDO::PARAM_STR);
     $statement->execute();
     $name_fetch=$statement->fetch(PDO::FETCH_ASSOC);
-}
+
 //手機是否在資料庫存在
     $sql = 'SELECT phone FROM customer_data WHERE phone=:phone';
     $statement=$pdo->prepare($sql);
