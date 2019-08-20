@@ -28,6 +28,8 @@
 #header .logo:hover{
   border:5px solid #777;
 }
+
+/* 此為nav */
 #header nav li{
   margin: 0 10px;
   padding: 0 20px;
@@ -48,7 +50,7 @@
 
 
 /* 選單Panel */
-#header .Menu-Panel{
+#header #Menu-Panel{
   display: none;
   position: fixed;
   top: 83px;
@@ -57,49 +59,56 @@
   border: 1px solid #eee;
   list-style-type: none;
 }
-#header .Menu-Panel li{
+#header #Menu-Panel li{
   padding: 10px 15px;
   cursor: pointer;
 }
-#header .Menu-Panel li:hover{
+#header #Menu-Panel li:hover{
   background: green;
   color: white;
 }
 
-/* 購物車Panel */
-#header .shopcart-Panel{
-  display: none;
+/* 購物車Panel與購物清單 */
+#header #shopcart-Panel{
   position: fixed;
   top: 83px;
   right: 160px;
   background: white;
   border: 1px solid #eee;
 }
-#header .shopcart-Panel p{
+#header #shopcart-Panel p,
+#shopping-list p{
   color: #777;
   padding: 50px;
 }
-#header .shopcart-Panel li{
+#header #shopcart-Panel li,
+#shopping-list li{
   display: flex;
   padding: 10px;
+  margin: 10px;
   border: 1px solid #eee;
 }
-#header .shopcart-Panel li .content,
-#header .shopcart-Panel li .delete{
+#header #shopcart-Panel li .content,
+#header #shopcart-Panel li .delete,
+#shopping-list li .content,
+#shopping-list li .delete{
   padding: 0 10px;
 }
-#header .shopcart-Panel li .content,
-#header .shopcart-Panel li .delete{
+#header #shopcart-Panel li .content,
+#header #shopcart-Panel li .delete,
+#shopping-list li .content,
+#shopping-list li .delete{
   line-height: 50px;
 }
-#header .shopcart-Panel li .delete:hover{
+#header #shopcart-Panel li .delete:hover,
+#shopping-list li .delete:hover{
   cursor: pointer;
   border-radius: 10px;
   background: green;
   color: white;
 }
-#header .shopcart-Panel .button{
-  display: none;
+#header #shopcart-Panel .button,
+#shopping-list .button{
   background: green;
   padding: 5px 20px;
   text-align: center;
@@ -107,8 +116,30 @@
   font-size: 20px;
   cursor: pointer;
 }
-#header .shopcart-Panel .button:hover{
+#header #shopcart-Panel .button:hover,
+#shopping-list .button:hover{
   color: white;
+}
+#shopping-list em{
+  height: 30%;
+  padding: 5px;
+  font-size: .8rem;
+  font-weight: bold;
+  background: red;
+  color: white;
+}
+#shopping-list{
+  position: fixed;
+  top: 20%;
+  right: 33%;
+  padding: 20px;
+  background: white;
+  border: 1px solid #eee;
+  border-radius: 10px;
+}
+#shopping-list h2{
+  text-align: center;
+  padding: 20px;
 }
 
 
@@ -131,19 +162,25 @@
   color: white;
 }
 
-
-/* 註冊與登入Panel */
+/* 開啟視窗 */
 #login.open,
 #signup.open,
 #signu-success.open,
-#update-member.open{
+#update-member.open,
+#shopping-list.open{
   display: block;
 }
+/* 關閉視窗 */
 #login,
 #signup,
-#update-member{
+#signu-success,
+#update-member,
+#shopcart-Panel,
+#shopping-list{
   display: none;
 }
+
+/* 註冊與登入Panel */
 .update-member-data{
   position: fixed;
   top: -20px;
@@ -203,8 +240,9 @@
 .login-signup .button:hover{
   color: white;
 }
+
+/* 此為狀態訊息 */
 #signu-success{
-  display: none;
   position: absolute;
   top: 20%;
   right: 43%;
