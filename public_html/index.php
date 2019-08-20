@@ -94,6 +94,25 @@
     <p>註冊成功</p>
     <div class="button close">確定</div>
   </div>
+
+  <!-- 此為商品書單 -->
+  <div id="commodity">
+    <!-- 商品清單 -->
+    <div id="commodity-list">
+     <div class="close">x</div>
+        <!-- 此為商品清單Template -->
+    </div>
+    <em>商品書單</em>
+    <div class="container clearfix">
+      <ul class="row">
+        <li class="col-4 nb" data-id="">
+          <img src="http://lorempixel.com/150/100/" alt="col-4">
+          <div class="book-name">現代PHP新的特點及良好的習慣</div>
+          <div class="price">NT$580</div>
+        </li>
+      </ul>
+    </div>
+  </div>
 </div>
 
 <!-- navTemplate部分 -->
@@ -116,14 +135,39 @@
     <div class="delete">刪除</div>
   </li>
 </script>
+
 <!-- 購物清單Template部分 -->
 <script id="shopping-list-item-template" type="text/x-handlebars-template"> 
  <li>
- <!-- 分待付款.待出貨.待收貨.已完成 -->
-    <em>待付款</em>  
-    <img src="http://lorempixel.com/50/50/" alt="">
-    <div class="content">現代PHP新的特點及良好的習慣</div>
-    <div class="price"><span>1</span>NT$<span>580</span></div>
+ <!-- 分待付款.待出貨.待收貨.已完成Template部分 -->
+    <em>{{status}}</em>  
+    <img src="{{img}}" alt="{{img}}">
+    <div class="book-name">{{book-name}}</div>
+    <div class="price"><span>{{num}}</span>NT$<span>{{price}}</span></div>
   </li>
+</script>
+
+<!-- 商品書單Template部分 -->
+<script id="commodity-item-template" type="text/x-handlebars-template">
+  <li class="col-4" data-id="{{id}}">
+    <img src="{{img}}}}" alt="{{img}}">
+    <div class="book-name">{{book-name}}</div>
+    <div class="price">NT${{price}}</div>
+  </li>
+</script>
+
+<!-- 商品清單Template部分 -->
+<script id="commodity-list-item-template" type="text/x-handlebars-template">
+  <div class="container">
+    <img src="{{img}}" alt="{{img}}">
+    <div class="content">
+      <div class="book-name">{{book-name}}</div>
+      <div class="author">作者：<span>{{author}}}/span></div>
+      <div class="Publishing-house">出版社：<span>{{Publishing-house}}</span></div>
+      <div class="Publication-date">出版日期：<span>{{Publication-date}}</span></div>
+      <div class="price">NT$580</div>
+      <div class="button">加入購物車</div>
+    </div>
+  </div>
 </script>
 <?php include('footer.php'); ?>

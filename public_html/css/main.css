@@ -88,15 +88,15 @@
   margin: 10px;
   border: 1px solid #eee;
 }
-#header #shopcart-Panel li .content,
+#header #shopcart-Panel li .book-name,
 #header #shopcart-Panel li .delete,
-#shopping-list li .content,
+#shopping-list li .book-name,
 #shopping-list li .delete{
   padding: 0 10px;
 }
-#header #shopcart-Panel li .content,
+#header #shopcart-Panel li .book-name,
 #header #shopcart-Panel li .delete,
-#shopping-list li .content,
+#shopping-list li .book-name,
 #shopping-list li .delete{
   line-height: 50px;
 }
@@ -167,7 +167,8 @@
 #signup.open,
 #signu-success.open,
 #update-member.open,
-#shopping-list.open{
+#shopping-list.open,
+#commodity-list.open{
   display: block;
 }
 /* 關閉視窗 */
@@ -176,7 +177,8 @@
 #signu-success,
 #update-member,
 #shopcart-Panel,
-#shopping-list{
+#shopping-list,
+#commodity-list{
   display: none;
 }
 
@@ -268,5 +270,90 @@
   cursor: pointer;
 }
 #signu-success .button:hover{
+  color: white;
+}
+
+/* 商品書單 */
+#commodity li{
+  list-style-type: none;
+}
+#commodity{
+  margin-top: 50px;
+  text-align: center;
+}
+#commodity em{
+  font-size: 3rem;
+  font-weight: bold;
+  padding: 5px;
+  border-bottom: 8px solid green;
+}
+#commodity li{
+  padding: 20px;
+  border: 5px solid rgb(180, 238, 211);
+  border-radius: 30px;
+  cursor: pointer;
+  margin: 30px 10px;
+}
+#commodity li:hover{
+  border: 5px solid rgb(0, 245, 131);
+}
+#commodity img{
+  width: 100%;
+  display: block;
+  
+}
+#commodity .book-name{
+  margin-top: 10px;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+#commodity .price{
+  margin-top: 10px;
+  color: red;
+}
+
+#commodity .col-4{
+  width: 31.5%;
+  flex: none;
+}
+
+/* 商品清單 */
+#commodity-list{
+  position: fixed;
+  top: 200px;
+  right: 25%;
+  padding: 30px;
+  background: white;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  z-index: 1;
+}
+#commodity-list img{
+  float: left;
+  width: 50vh;
+  height: auto;
+  padding: 10px;
+}
+#commodity-list .container{
+  margin-top: 40px;
+}
+#commodity-list .content{
+  float: left;
+  padding: 10px;
+}
+#commodity-list .book-name,
+#commodity-list .Publishing-house{
+  padding: 10px 0;
+}
+#commodity-list .button{
+  background: green;
+  margin-top: 10px;
+  padding: 5px 0;
+  border-radius: 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+#commodity-list .button:hover{
   color: white;
 }

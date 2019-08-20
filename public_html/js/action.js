@@ -34,6 +34,9 @@ $(document).ready(function(){
   var shopcart_Panel={
     el: '#shopcart-Panel',
   }
+  var commodity_list={
+    el: '#commodity-list',
+  };
   //主要為Template物件使用
   var template ={
     nav:function(li_1, li_val_1, li_2_1, li_val_2, li_2_2){
@@ -82,13 +85,17 @@ $(document).ready(function(){
         e.preventDefault();
         $(shopping_list.el).addClass('open');
     })
+      .on('click', '#commodity li', function(e) {//開啟購物清單
+        e.preventDefault();
+        $(commodity_list.el).addClass('open');
+    })
       .on('click', '.dropdown', function(e) {//呼叫選單
-      e.preventDefault();
-      $(Menu_Panel.el).slideToggle(200);
+        e.preventDefault();
+        $(Menu_Panel.el).slideToggle(200);
     }) 
       .on('click', '.shop-cart-nav', function(e) {//呼叫購物車
-      e.preventDefault();
-      $(shopcart_Panel.el).slideToggle(200);
+        e.preventDefault();
+        $(shopcart_Panel.el).slideToggle(200);
     })
       .on('click', '.close', function(e){   //關閉視窗處理
         e.preventDefault();
@@ -97,6 +104,7 @@ $(document).ready(function(){
         $(signu_success.el).removeClass('open');
         $(update_member.el).removeClass('open');
         $(shopping_list.el).removeClass('open');
+        $(commodity_list.el).removeClass('open');
         $(this).siblings('input').val('');
         public_signup_login.alert_msg_off();
     })
