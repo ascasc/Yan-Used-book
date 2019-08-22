@@ -42,6 +42,9 @@ $(document).ready(function(){
   var insert_commodity={
     el: '#insert-commodity',
   };
+  var update_member_admin={
+    el:'#update-member-admin',
+  };
   //主要為Template物件使用
   var template ={
     nav:function(li_1, li_val_1, li_2_1, li_val_2, li_2_2){
@@ -104,6 +107,9 @@ $(document).ready(function(){
         if($(this).is('.insert-commodity-nav')){//開啟新增商品
           $(insert_commodity.el).addClass('open');
         }
+        if($(this).is('.update-member-admin-nav')){//開啟管理員修改會員資料
+          $(update_member_admin.el).addClass('open');
+        }
     })
       .on('click', '.close', function(e){   //關閉視窗處理
         e.preventDefault();
@@ -114,6 +120,7 @@ $(document).ready(function(){
         $(this).closest(shopping_list.el).removeClass('open');
         $(this).closest(commodity_list.el).removeClass('open');
         $(this).closest(insert_commodity.el).removeClass('open');
+        $(this).closest(update_member_admin.el).removeClass('open');
         $(this).siblings('input').val('');
         public_signup_login.alert_msg_off();
     })

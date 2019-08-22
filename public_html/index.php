@@ -15,10 +15,9 @@
     </div>
     <!-- 此為選單 -->
     <div id="Menu-Panel"> 
-      <li class="update-member-nav">修改會員資料</li>
-      <li class="shopping-list-nav">購物清單</li>
-      <li class="insert-commodity-nav">新增商品</li>
-      <li>登出</li>
+      <!-- 此為管理員的選單Template部分 -->
+      <!-- 或 -->
+      <!-- 此為會員的選單Template部分 -->
     </div>
   </div>
   
@@ -65,23 +64,18 @@
   </div>
   <!-- 此為修改個人資料 -->
   <div id="update-member" class="login-signup">
-    <form>
-      <div class="close">x</div>
-      <h3>修改會員資料</h3>
-      <div class="error-msg">
-			  <div class="alert alert-danger">error</div>
-		  </div>
-      <label>姓名：</label><label>顏章羽</label><br><br>
-      <label>Email</label><br>
-      <input type="email" name="email"><br>
-      <label>手機</label><br>
-      <input type="text" name="phone"><br>
-      <label>密碼</label><br>
-      <input type="password" name="password">
-      <label>確認密碼</label><br>
-      <input type="password" name="two_password" class="two_password">
-      <div class="button">修改</div>
-    </form>
+    <!-- 此為資料庫資料放入修改資料Template部分 -->
+  </div>
+  <!-- 此為管理員修改資料 -->
+  <div id="update-member-admin">
+    <div class="close">x</div>
+    <h3>管理員修改會員資料</h3>
+    <div class="error-msg">
+      <div class="alert alert-danger">error</div>
+    </div>
+    <ul>
+      <!-- 此為資料庫資料放入管理員修改資料Template部分 -->
+    </ul> 
   </div>
   <!-- 此為購物清單 -->
   <div id="shopping-list">
@@ -134,6 +128,7 @@
     </div>
   </div>
 </div>
+  
 
 <!-- navTemplate部分 -->
 <script id="nav-item-template" type="text/x-handlebars-template">
@@ -189,5 +184,45 @@
       <div class="button">加入購物車</div>
     </div>
   </div>
+</script>
+
+<!-- 此為資料庫資料放入管理員修改資料Template部分 -->
+<script id="update-member-admin-SQL-item-template" type="text/x-handlebars-template">
+  <li>
+    <form>
+      <label>姓名：</label><span>{{name}}</span>
+      <label>Email：</label>
+      <input type="email" name="email" value="{{email}}">
+      <label>手機：</label>
+      <input type="text" name="phone" value="{{phone}">
+      <div class="button">修改</div>
+    </form>
+  </li>
+</script>
+<!-- 此為資料庫資料放入修改資料Template部分 -->
+<script id="update-member-SQL-item-template" type="text/x-handlebars-template">
+  <div class="close">x</div>
+  <h3>修改會員資料</h3>
+  <div class="error-msg">
+		<div class="alert alert-danger">error</div>
+  </div>
+  <form>
+    <label>姓名：</label><span>{{name}}</span><br><br>
+    <label>Email</label><br>
+    <input type="email" name="email" value="{{email}}"><br>
+    <label>手機</label><br>
+    <input type="text" name="phone" value="{{phone}}"><br>
+    <div class="button">修改</div>
+  </form>
+</script>
+<!-- 此為管理員與會員選單Template部分 -->
+<script id="Menu-Panel-member-item-template" type="text/x-handlebars-template">
+<!-- .update-member-admin-nav{管理員修改會員資料} -->
+<!-- .insert-commodity-nav{新增商品} -->
+<!-- .update-member-nav{修改會員資料} -->
+<!-- .shopping-list-nav{購物清單} -->
+  <li class="{{update-member-nav}}">{{update-member-content}}}</li> 
+  <li class="{{insert-commodity-nav}}">{{insert-commodity-content}}</li>
+  <li>登出</li>
 </script>
 <?php include('footer.php'); ?>
