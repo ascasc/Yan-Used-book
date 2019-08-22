@@ -17,6 +17,7 @@
     <div id="Menu-Panel"> 
       <li class="update-member-nav">修改會員資料</li>
       <li class="shopping-list-nav">購物清單</li>
+      <li class="insert-commodity-nav">新增商品</li>
       <li>登出</li>
     </div>
   </div>
@@ -37,7 +38,7 @@
         <input type="email" name="email"><br>
         <label>密碼</label><br>
         <input type="password" name="password">
-        <div class="button">登入</div><br>
+        <div class="button login">登入</div><br>
       <center><a href="#">忘記密碼?</a></center>
     </form>
   </div>
@@ -59,7 +60,7 @@
       <input type="password" name="password">
       <label>確認密碼</label><br>
       <input type="password" name="two_password" class="two_password">
-      <div class="button">註冊</div>
+      <div class="button signup">註冊</div>
     </form>
   </div>
   <!-- 此為修改個人資料 -->
@@ -89,12 +90,31 @@
       <!-- 此為購物清單Template部分產生 -->
       
   </div>
+  <!-- 此為insert到資料的commodity -->
+  <div id="insert-commodity">
+    <div class="close">x</div>
+    <h2>新增商品</h2>
+    <form>
+      <label>圖片：</label>
+      <input type="file" name="img"><br>
+      <label>書名：</label>
+      <input type="text" name="book-name"><br>
+      <label>作者：</label>
+      <input type="text" name="author"><br>
+      <label>出版社：</label>
+      <input type="text" name="Publishing-house"><br>
+      <label>出版日期：</label>
+      <input type="date" name="Publication-date"><br>
+      <label>價錢：</label>
+      <input type="text" name="price"><br>
+      <div class="button">新增</div>
+    </form>
+  </div>
   <!-- 此為狀態訊息 -->
   <div id="signu-success">
     <p>註冊成功</p>
     <div class="button close">確定</div>
   </div>
-
   <!-- 此為商品書單 -->
   <div id="commodity">
     <!-- 商品清單 -->
@@ -165,7 +185,7 @@
       <div class="author">作者：<span>{{author}}}/span></div>
       <div class="Publishing-house">出版社：<span>{{Publishing-house}}</span></div>
       <div class="Publication-date">出版日期：<span>{{Publication-date}}</span></div>
-      <div class="price">NT$580</div>
+      <div class="price">NT${{price}}</div>
       <div class="button">加入購物車</div>
     </div>
   </div>
