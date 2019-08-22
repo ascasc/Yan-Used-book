@@ -188,7 +188,7 @@
 
 <!-- 此為資料庫資料放入管理員修改資料Template部分 -->
 <script id="update-member-admin-SQL-item-template" type="text/x-handlebars-template">
-  <li>
+  <li data-id="{{id}}">
     <form>
       <label>姓名：</label><span>{{name}}</span>
       <label>Email：</label>
