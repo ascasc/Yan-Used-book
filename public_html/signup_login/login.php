@@ -13,7 +13,7 @@ if(empty($_POST['email'])){//Email不可為空
 }else if(!preg_match('/(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]{8}/', $_POST['password'])){//密碼需大小寫八個以上
     msg_error('密碼需大小寫八個以上');
 }else if($fetch['email'] && password_verify($_POST['password'], $fetch['password'])){
-    
+    session_start();
     //Email與密碼是否在資料庫存在
     $sql = 'SELECT * FROM customer_data WHERE email=:email';
     $statement=$pdo->prepare($sql);
@@ -25,7 +25,7 @@ if(empty($_POST['email'])){//Email不可為空
             'name'=>$row['name'],
             'email'=>$row['email'],
             'phone'=>$row['phone'],
-            'password'=>$row['password']
+            'm_level'=>$row['m_level'],
         ];
     }
     echo json_encode(['name'=>'登入成功']); 

@@ -1,10 +1,21 @@
 <?php include('header.php'); ?>
+<?php include('login_status.php');?>
 <div id="panel">
   <div id="header" class="clearfix">
     <div class="logo">Y</div>
     <nav class="clearfix">
       <ul class="nav">
-        <!-- 此為navTemplate產生 -->
+        <!-- 以PHPsession來判斷登入與為登入的狀態 -->
+        <li class="<?php if($login_status=='On'){echo 'shop-cart-nav';}else if($login_status=='Off'){echo 'login-nav';}?>">
+          <?php if($login_status=='On'){echo '購物車';}else{echo '登入';}?>
+        </li>
+        <li class="<?php if($login_status=='On'){echo 'dropdown dropdown-toggle';}else if($login_status=='Off'){echo 'signup-nav';}?>">
+          <?php if($login_status=='On'){echo '選單';}else if($login_status=='Off'){echo '註冊';}?>
+          <ul class="dropdown-menu">
+            <li>購物清單</li>
+            <li>修改資料</li>
+          </ul>
+        </li>
       </ul>
     </nav>
     <!-- 此為購物車 -->
@@ -14,10 +25,18 @@
       <div class="button">結帳</div>
     </div>
     <!-- 此為選單 -->
-    <div id="Menu-Panel"> 
-      <!-- 此為管理員的選單Template部分 -->
-      <!-- 或 -->
-      <!-- 此為會員的選單Template部分 -->
+    <div id="Menu-Panel">
+      <!-- 此為權限的設定 -->
+      <li class="<?php if($login_level=='admin'){echo 'update-member-admin-nav';}else if($login_level=='member'){echo 'update-member-nav';}?>">
+      <?php if($login_level=='admin'){echo '管理員修改會員資料';}else if($login_level=='member'){echo '修改會員資料';}?>
+      </li> 
+      <?php if($login_level=='admin'){?>
+      <li class="insert-commodity-nav">新增商品</li> 
+      <?php }?>
+      <li class="<?php if($login_level=='admin'){echo 'shopping-list-admin-nav';}else if($login_level=='member'){echo 'shopping-list-nav';}?>">
+      <?php if($login_level=='admin'){echo '管理員購物清單';}else if($login_level=='member'){echo '購物清單';}?>
+      </li> 
+      <li class="sign-out">登出</li>
     </div>
   </div>
   
@@ -26,6 +45,7 @@
     <h1>歡迎來到 Yan二手書店</h1>
   </div>
   <!-- 此為登入系統 -->
+  <?php if($login_status =='Off'){?>
   <div id="login" class="login-signup">
     <form>
       <div class="close">x</div>
@@ -41,7 +61,9 @@
       <center><a href="#">忘記密碼?</a></center>
     </form>
   </div>
+  <?php }?>
   <!-- 此為註冊資料 -->
+  <?php if($login_status =='Off'){?>
   <div id="signup" class="login-signup">
     <form>
       <div class="close">x</div>
@@ -62,11 +84,15 @@
       <div class="button signup">註冊</div>
     </form>
   </div>
+  <?php }?>
   <!-- 此為修改個人資料 -->
+  <?php if($login_level=='member'){?>
   <div id="update-member" class="login-signup">
     <!-- 此為資料庫資料放入修改資料Template部分 -->
   </div>
+  <?php }?>
   <!-- 此為管理員修改資料 -->
+  <?php if($login_level=='admin'){?>
   <div id="update-member-admin">
     <div class="close">x</div>
     <h3>管理員修改會員資料</h3>
@@ -77,6 +103,7 @@
       <!-- 此為資料庫資料放入管理員修改資料Template部分 -->
     </ul> 
   </div>
+  <?php }?>
   <!-- 此為購物清單 -->
   <div id="shopping-list">
     <div class="close">x</div>
@@ -85,12 +112,13 @@
       
   </div>
   <!-- 此為insert到資料的commodity -->
+  <?php if($login_level=='admin'){?>
   <div id="insert-commodity">
     <div class="close">x</div>
     <h2>新增商品</h2>
     <form>
       <label>圖片：</label>
-      <input type="file" name="img"><br>
+      <input type="file" name="file_img"><br>
       <label>書名：</label>
       <input type="text" name="book-name"><br>
       <label>作者：</label>
@@ -104,6 +132,7 @@
       <div class="button">新增</div>
     </form>
   </div>
+  <?php }?>
   <!-- 此為狀態訊息 -->
   <div id="signu-success">
     <p>註冊成功</p>
@@ -129,18 +158,18 @@
   </div>
 </div>
   
-
-<!-- navTemplate部分 -->
-<script id="nav-item-template" type="text/x-handlebars-template">
-  <li class="{{nav_li_1}}">{{nav_li_val_1}}</li>
-  <li class="{{nav_li_2_1}} {{nav_li_2_2}}">{{nav_li_val_2}}
+<script id="nav-Panel-item-template" type="text/x-handlebars-template">
+  <li class="<?php if($login_status=='On'){echo 'shop-cart-nav';}else if($login_status=='Off'){echo 'login-nav';}?>">
+    <?php if($login_status=='On'){echo '購物車';}?>
+  </li>
+  <li class="<?php if($login_status=='On'){echo 'dropdown dropdown-toggle';}else if($login_status=='Off'){echo 'signup-nav';}?>">
+    <?php if($login_status=='On'){echo '選單';}else if($login_status=='Off'){echo '註冊';}?>
     <ul class="dropdown-menu">
-        <li>購物清單</li>
-        <li>修改資料</li>
-      </ul>
+      <li>購物清單</li>
+      <li>修改資料</li>
+    </ul>
   </li>
 </script>
-
 <!-- 購物車Template部分 -->
 <script id="shopcart-Panel-item-template" type="text/x-handlebars-template">
   <li>
@@ -217,12 +246,6 @@
 </script>
 <!-- 此為管理員與會員選單Template部分 -->
 <script id="Menu-Panel-member-item-template" type="text/x-handlebars-template">
-<!-- .update-member-admin-nav{管理員修改會員資料} -->
-<!-- .insert-commodity-nav{新增商品} -->
-<!-- .update-member-nav{修改會員資料} -->
-<!-- .shopping-list-nav{購物清單} -->
-  <li class="{{update-member-nav}}">{{update-member-content}}}</li> 
-  <li class="{{insert-commodity-nav}}">{{insert-commodity-content}}</li>
-  <li>登出</li>
+
 </script>
 <?php include('footer.php'); ?>

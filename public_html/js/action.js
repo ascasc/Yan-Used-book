@@ -1,7 +1,6 @@
 $(document).ready(function(){
-  //handlebard最初的準備時候
-  var nav_template = $('#nav-item-template').html();
-  var nav_handlebars =Handlebars.compile(nav_template);
+  var nav_template = $('#nav-Panel-item-template').html();
+  var nav_template_compile = Handlebars.compile(nav_template);
 
   var panel={
     el: '#panel',
@@ -48,15 +47,7 @@ $(document).ready(function(){
   //主要為Template物件使用
   var template ={
     nav:function(li_1, li_val_1, li_2_1, li_val_2, li_2_2){
-        var login_nav_item={
-        nav_li_1: li_1,
-        nav_li_val_1: li_val_1,
-        nav_li_2_1: li_2_1,
-        nav_li_val_2: li_val_2,
-        nav_li_2_2: li_2_2
-      };
-      var login_nav_complile = nav_handlebars(login_nav_item);
-      $(panel.el).find('#header nav .nav').prepend(login_nav_complile);
+      $('.nav').prepend(nav_template_compile);
     },
   };
   // 主要為登入與註冊訊息物件使用
@@ -74,10 +65,13 @@ $(document).ready(function(){
       $(signu_success.el).addClass('open');
     } 
   };
-  // 為登入的nav
-  template.nav('login-nav','登入','signup-nav', '註冊');
-    $(panel.el)
-      .on('click', '#header li', function(e){
+
+  if(login_status=='On'){
+    public_signup_login.alert_msg__success('已登入狀態');
+  }
+  
+  $(panel.el)
+    .on('click', '#header li', function(e){
         e.preventDefault();
         if($(this).is('.login-nav')){//開啟登入視窗
           $(login.el).addClass('open');
@@ -91,12 +85,12 @@ $(document).ready(function(){
         if($(this).is('.shop-cart-nav')){//呼叫購物車
           $(shopcart_Panel.el).slideToggle(200);
         }
-      })
-      .on('click', '#commodity li', function(e) {//開啟購物清單
+    })
+    .on('click', '#commodity li', function(e) {//開啟購物清單
         e.preventDefault();
         $(commodity_list.el).addClass('open');
-      })
-      .on('click', '#Menu-Panel li', function(e){//登入後的修改資料
+    })
+    .on('click', '#Menu-Panel li', function(e){//登入後的修改資料
         e.preventDefault();
         if($(this).is('.update-member-nav')){
           $(update_member.el).addClass('open');
@@ -110,8 +104,12 @@ $(document).ready(function(){
         if($(this).is('.update-member-admin-nav')){//開啟管理員修改會員資料
           $(update_member_admin.el).addClass('open');
         }
+        if($(this).is('.sign-out')){//登出
+          $.post("signup_login/sign-out.php");
+          window.location.reload();
+        }
     })
-      .on('click', '.close', function(e){   //關閉視窗處理
+    .on('click', '.close', function(e){   //關閉視窗處理
         e.preventDefault();
         $(this).closest(signup.el).removeClass('open');
         $(this).closest(login.el).removeClass('open');
@@ -124,7 +122,7 @@ $(document).ready(function(){
         $(this).siblings('input').val('');
         public_signup_login.alert_msg_off();
     })
-      .on('click', '.button', function(e) {
+    .on('click', '.button', function(e) {
         e.preventDefault();
         if($(this).is('.signup')){//註冊送出並且驗證
           var data=$('#signup.login-signup').find('form').serialize();
@@ -146,9 +144,7 @@ $(document).ready(function(){
           $.post("signup_login/login.php", data, function(){})
             .done(function(data, textStatus, jqXHR) {//登入成功回傳到HTML成功的訊息
               $(panel.el).find('.close').click();
-              public_signup_login.alert_msg__success(data.name);
-              $(panel.el).find('#header nav li').remove();
-              template.nav('shop-cart-nav','購物車','dropdown', '選單', 'dropdown-toggle');
+              window.location.reload();
           })
             .fail(function(xhr, textStatus, errorThrown){//登入錯誤回傳到HTML錯誤訊息
               if(errorThrown !='Bad Request'){
@@ -158,5 +154,6 @@ $(document).ready(function(){
               }
           });
         }
-    });
+  });
+
 });
