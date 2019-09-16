@@ -1,5 +1,6 @@
 <?php
 include('../../../db.php');
+
 header('Content-Type: application/json; charset=utf-8');
 try{
     $pdo = new PDO("mysql:host=$db[host];dbname=$db[dbname];port=$db[port];charset=$db[charset]",$db['username'],$db['password']);
@@ -30,8 +31,4 @@ $email=filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);//驗證email
     $statement->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
     $statement->execute();
     $fetch=$statement->fetch(PDO::FETCH_ASSOC);
-function msg_error($msg){
-    http_response_code(400);
-    echo $msg;
-}
 ?>

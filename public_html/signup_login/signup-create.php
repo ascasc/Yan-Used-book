@@ -2,6 +2,12 @@
 include('public_signup_login.php');
 header('Content-Type: application/json; charset=utf-8');
 
+try {
+	$pdo = new PDO("mysql:host=$db[host];dbname=$db[dbname];port=$db[port];charset=$db[charset]", $db['username'], $db['password']);
+} catch (PDOException $e) {
+	echo "Database connection failed.";
+	exit;
+}
 
 if(empty($_POST['name'])){//姓名不可為空
     msg_error('姓名不可為空');

@@ -1,6 +1,11 @@
 $(document).ready(function(){
-  var nav_template = $('#nav-Panel-item-template').html();
-  var nav_template_compile = Handlebars.compile(nav_template);
+  // 商品書單
+  var commodity_template = $('#commodity-item-template').html();
+  var commodity_template_compile = Handlebars.compile(commodity_template);
+  var commodity_UI = '';
+  // 商品書單清單
+  var commodity_list_template = $('#commodity-list-item-template').html();
+  var commodity_list_template_compile = Handlebars.compile(commodity_list_template);
 
   var panel={
     el: '#panel',
@@ -33,6 +38,10 @@ $(document).ready(function(){
   var shopcart_Panel={
     el: '#shopcart-Panel',
   }
+  // 商品書單
+  var commodity={
+    el: '#commodity',
+  };
   // 商品書單清單
   var commodity_list={
     el: '#commodity-list',
@@ -44,12 +53,6 @@ $(document).ready(function(){
   var update_member_admin={
     el:'#update-member-admin',
   };
-  //主要為Template物件使用
-  var template ={
-    nav:function(li_1, li_val_1, li_2_1, li_val_2, li_2_2){
-      $('.nav').prepend(nav_template_compile);
-    },
-  };
   // 主要為登入與註冊訊息物件使用
   var public_signup_login={
     alert_msg: function(el,alert_msg) {
@@ -59,18 +62,78 @@ $(document).ready(function(){
     alert_msg_off: function() {
       $('.error-msg').removeClass('open');
     },
-    alert_msg__success: function(text) {
+    alert_msg_success: function(text) {
       $(signu_success.el).find('p').text('');
       $(signu_success.el).find('p').text(text);
       $(signu_success.el).addClass('open');
     } 
   };
 
+  $.each(commodities, function (index, commodity) { 
+    commodity_UI = commodity_UI + commodity_template_compile(commodity);
+  });
+  $(commodity.el).find('.container ul.row').append(commodity_UI);
+
   if(login_status=='On'){
-    public_signup_login.alert_msg__success('已登入狀態');
+    public_signup_login.alert_msg_success('已登入狀態');
   }
   
   $(panel.el)
+  .on('submit', 'form', function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if($(this).is('#signup_form')){//註冊送出並且驗證
+          var data=$('#signup.login-signup').find('form').serialize();
+          $.post("signup_login/signup-create.php", data, function(){})
+            .done(function(data, textStatus, jqXHR) {//註冊成功回傳到HTML成功的訊息
+              $(signup.el).find('.close').click();
+              public_signup_login.alert_msg_success(data.name);
+          })
+            .fail(function(xhr, textStatus, errorThrown){//註冊錯誤回傳到HTML錯誤訊息
+              if(errorThrown !='Bad Request'){
+                public_signup_login.alert_msg_off();
+              }else{
+                public_signup_login.alert_msg(signup.el,xhr.responseText);
+              }
+          });
+        }
+        if($(this).is('#login_form')){//登入送出並且驗證
+          var data=$('#login.login-signup').find('form').serialize();
+          $.post("signup_login/login.php", data, function(){})
+            .done(function(data, textStatus, jqXHR) {//登入成功回傳到HTML成功的訊息
+              $(panel.el).find('.close').click();
+              window.location.reload();
+          })
+            .fail(function(xhr, textStatus, errorThrown){//登入錯誤回傳到HTML錯誤訊息
+              if(errorThrown !='Bad Request'){
+                public_signup_login.alert_msg_off();
+              }else{
+                public_signup_login.alert_msg(login.el,xhr.responseText);
+              }
+          });
+        }
+        if($(this).is('#create_book_form')){
+          $.ajax({
+            url: "admin/create_book.php",
+            type: "POST",
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData:false,
+          }) 
+          .done(function(data, textStatus, jqXHR) {//註冊成功回傳到HTML成功的訊息
+            $(insert_commodity.el).find('.close').click();
+            window.location.reload();
+        })
+          .fail(function(xhr, textStatus, errorThrown){//註冊錯誤回傳到HTML錯誤訊息
+            if(errorThrown !='Bad Request'){
+              public_signup_login.alert_msg_off();
+            }else{
+              public_signup_login.alert_msg(insert_commodity.el,xhr.responseText);
+            }
+          });
+        }
+    })
     .on('click', '#header li', function(e){
         e.preventDefault();
         if($(this).is('.login-nav')){//開啟登入視窗
@@ -86,9 +149,16 @@ $(document).ready(function(){
           $(shopcart_Panel.el).slideToggle(200);
         }
     })
-    .on('click', '#commodity li', function(e) {//開啟購物清單
+    .on('click', '#commodity li', function(e) {//開啟商品書單清單
         e.preventDefault();
+        var id = $(this).data('id');
         $(commodity_list.el).addClass('open');
+        $.post("member/commodity_list.php", {id:id},
+          function (data, textStatus, jqXHR) {
+            $(commodity_list.el).find('.container').html('');
+            $(commodity_list.el).find('.container').append(commodity_list_template_compile(data)); 
+        });
+        
     })
     .on('click', '#Menu-Panel li', function(e){//登入後的修改資料
         e.preventDefault();
@@ -117,43 +187,24 @@ $(document).ready(function(){
         $(this).closest(update_member.el).removeClass('open');
         $(this).closest(shopping_list.el).removeClass('open');
         $(this).closest(commodity_list.el).removeClass('open');
-        $(this).closest(insert_commodity.el).removeClass('open');
+        $(this).closest(insert_commodity.el).removeClass('open');//關閉新增商品
+        $(this).closest(insert_commodity.el).find('img').removeClass('open');
         $(this).closest(update_member_admin.el).removeClass('open');
-        $(this).siblings('input').val('');
+        $(this).siblings('#create_book_form ').find('input:not(.button)').val('');
         public_signup_login.alert_msg_off();
     })
-    .on('click', '.button', function(e) {
-        e.preventDefault();
-        if($(this).is('.signup')){//註冊送出並且驗證
-          var data=$('#signup.login-signup').find('form').serialize();
-          $.post("signup_login/signup-create.php", data, function(){})
-            .done(function(data, textStatus, jqXHR) {//註冊成功回傳到HTML成功的訊息
-              $(signup.el).find('.close').click();
-              public_signup_login.alert_msg__success(data.name);
-          })
-            .fail(function(xhr, textStatus, errorThrown){//註冊錯誤回傳到HTML錯誤訊息
-              if(errorThrown !='Bad Request'){
-                public_signup_login.alert_msg_off();
-              }else{
-                public_signup_login.alert_msg(signup.el,xhr.responseText);
-              }
-          });
-        }
-        if($(this).is('.login')){//登入送出並且驗證
-          var data=$('#login.login-signup').find('form').serialize();
-          $.post("signup_login/login.php", data, function(){})
-            .done(function(data, textStatus, jqXHR) {//登入成功回傳到HTML成功的訊息
-              $(panel.el).find('.close').click();
-              window.location.reload();
-          })
-            .fail(function(xhr, textStatus, errorThrown){//登入錯誤回傳到HTML錯誤訊息
-              if(errorThrown !='Bad Request'){
-                public_signup_login.alert_msg_off();
-              }else{
-                public_signup_login.alert_msg(login.el,xhr.responseText);
-              }
-          });
-        }
-  });
-
+    
+    .on('change','#insert-commodity form .file_img', function(e){
+      const file = this.files[0];//將上傳檔案轉換為base64字串
+          
+      const fr = new FileReader();//建立FileReader物件
+      fr.onload = function (e) {
+        $('#insert-commodity').find('img')
+        .addClass('open')
+        .attr('src', e.target.result);//读取的结果放入圖片
+      };
+      // 使用 readAsDataURL 將圖片轉成 Base64
+      fr.readAsDataURL(file);
+    });
+    
 });

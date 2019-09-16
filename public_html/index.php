@@ -1,5 +1,7 @@
+
 <?php include('header.php'); ?>
 <?php include('login_status.php');?>
+<?php include('commodity_data.php');?>
 <div id="panel">
   <div id="header" class="clearfix">
     <div class="logo">Y</div>
@@ -47,7 +49,7 @@
   <!-- 此為登入系統 -->
   <?php if($login_status =='Off'){?>
   <div id="login" class="login-signup">
-    <form>
+    <form id="login_form">
       <div class="close">x</div>
         <h3>Yan-二手書店登入</h3>
         <div class="error-msg">
@@ -57,7 +59,7 @@
         <input type="email" name="email"><br>
         <label>密碼</label><br>
         <input type="password" name="password">
-        <div class="button login">登入</div><br>
+        <input type="submit" value="註冊" class="button">
       <center><a href="#">忘記密碼?</a></center>
     </form>
   </div>
@@ -65,7 +67,7 @@
   <!-- 此為註冊資料 -->
   <?php if($login_status =='Off'){?>
   <div id="signup" class="login-signup">
-    <form>
+    <form id="signup_form">
       <div class="close">x</div>
       <h3>Yan-二手書店註冊</h3>
       <div class="error-msg">
@@ -81,7 +83,7 @@
       <input type="password" name="password">
       <label>確認密碼</label><br>
       <input type="password" name="two_password" class="two_password">
-      <div class="button signup">註冊</div>
+      <input type="submit" value="註冊" class="button">
     </form>
   </div>
   <?php }?>
@@ -116,20 +118,24 @@
   <div id="insert-commodity">
     <div class="close">x</div>
     <h2>新增商品</h2>
-    <form>
+    <div class="error-msg">
+		  <div class="alert alert-danger">error</div>
+		</div>
+    <img src="" alt="insert-commodity-img">
+    <form action="admin/create_book.php" enctype="multipart/form-data" id="create_book_form">
       <label>圖片：</label>
-      <input type="file" name="file_img"><br>
+      <input type="file" name="file_img" class="file_img" id="file_img"><br>
       <label>書名：</label>
-      <input type="text" name="book-name"><br>
+      <input type="text" name="book_name"><br>
       <label>作者：</label>
       <input type="text" name="author"><br>
       <label>出版社：</label>
-      <input type="text" name="Publishing-house"><br>
+      <input type="text" name="Publishing_house"><br>
       <label>出版日期：</label>
-      <input type="date" name="Publication-date"><br>
+      <input type="date" name="Publication_date"><br>
       <label>價錢：</label>
       <input type="text" name="price"><br>
-      <div class="button">新增</div>
+      <input type="submit" value="新增" class="button">
     </form>
   </div>
   <?php }?>
@@ -138,26 +144,26 @@
     <p>註冊成功</p>
     <div class="button close">確定</div>
   </div>
+  <?php if($login_status ='On'){?>
   <!-- 此為商品書單 -->
   <div id="commodity">
     <!-- 商品清單 -->
-    <div id="commodity-list">
+    <div id="commodity-list"> 
      <div class="close">x</div>
+     <div class="button">加入購物車</div>
+        <div class="container">
         <!-- 此為商品清單Template -->
+        </div>  
     </div>
     <em>商品書單</em>
     <div class="container clearfix">
       <ul class="row">
-        <li class="col-4 nb" data-id="">
-          <img src="http://lorempixel.com/150/100/" alt="col-4">
-          <div class="book-name">現代PHP新的特點及良好的習慣</div>
-          <div class="price">NT$580</div>
-        </li>
+        <!-- 此為商品書單Template -->
       </ul>
     </div>
   </div>
+  <?php }?>
 </div>
-  
 <script id="nav-Panel-item-template" type="text/x-handlebars-template">
   <li class="<?php if($login_status=='On'){echo 'shop-cart-nav';}else if($login_status=='Off'){echo 'login-nav';}?>">
     <?php if($login_status=='On'){echo '購物車';}?>
@@ -194,25 +200,22 @@
 <!-- 商品書單Template部分 -->
 <script id="commodity-item-template" type="text/x-handlebars-template">
   <li class="col-4" data-id="{{id}}">
-    <img src="{{img}}}}" alt="{{img}}">
-    <div class="book-name">{{book-name}}</div>
+    <img src="{{img}}" alt="{{img}}">
+    <div class="book-name">{{book_name}}</div>
     <div class="price">NT${{price}}</div>
   </li>
 </script>
 
 <!-- 商品清單Template部分 -->
 <script id="commodity-list-item-template" type="text/x-handlebars-template">
-  <div class="container">
-    <img src="{{img}}" alt="{{img}}">
-    <div class="content">
-      <div class="book-name">{{book-name}}</div>
-      <div class="author">作者：<span>{{author}}}/span></div>
-      <div class="Publishing-house">出版社：<span>{{Publishing-house}}</span></div>
-      <div class="Publication-date">出版日期：<span>{{Publication-date}}</span></div>
+  <img src="{{img}}" alt="{{img}}">
+    <div class="content"  data="{{id}}">
+      <div class="book-name">{{book_name}}</div>
+      <div class="author">作者：<span>{{author}}</span></div>
+      <div class="Publishing-house">出版社：<span>{{Publishing_house}}</span></div>
+      <div class="Publication-date">出版日期：<span>{{Publication_date}}</span></div>
       <div class="price">NT${{price}}</div>
-      <div class="button">加入購物車</div>
     </div>
-  </div>
 </script>
 
 <!-- 此為資料庫資料放入管理員修改資料Template部分 -->
@@ -246,6 +249,5 @@
 </script>
 <!-- 此為管理員與會員選單Template部分 -->
 <script id="Menu-Panel-member-item-template" type="text/x-handlebars-template">
-
 </script>
 <?php include('footer.php'); ?>

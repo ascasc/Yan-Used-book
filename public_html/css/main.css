@@ -1,3 +1,17 @@
+/* 按鈕 */
+#panel .button{
+  background: green;
+  padding: 5px 100px;
+  margin-top: 10px;
+  border-radius: 10px;
+  font-size: 20px;
+  font-weight: 350;
+  cursor: pointer;
+}
+#panel .button:hover{
+  color: white;
+}
+
 /* header */
 #header{
   position: fixed;
@@ -171,7 +185,8 @@
 #shopping-list.open,
 #commodity-list.open,
 #insert-commodity.open,
-#update-member-admin.open{
+#update-member-admin.open,
+#insert-commodity img.open{
   display: block;
 }
 /* 關閉視窗 */
@@ -183,7 +198,8 @@
 #shopping-list,
 #commodity-list,
 #insert-commodity,
-#update-member-admin{
+#update-member-admin,
+#insert-commodity img{
   display: none;
 }
 
@@ -235,26 +251,13 @@
   font-weight: 200;
   margin-bottom: 14px;
 }
-.login-signup .button{
-  text-align: center;
-  margin-top: 10px;
-}
-.login-signup .button{
-  background: green;
-  padding: 5px 20px;
-  border-radius: 10px;
-  font-size: 20px;
-  cursor: pointer;
-}
-.login-signup .button:hover{
-  color: white;
-}
+
 
 /* 此為狀態訊息 */
 #signu-success{
-  position: absolute;
+  position: fixed;
   top: 20%;
-  right: 43%;
+  right: 46%;
   width: 200px;
   padding: 10px;
   background: white;
@@ -307,7 +310,7 @@
 #commodity img{
   width: 100%;
   display: block;
-  
+  height: 200px;
 }
 #commodity .book-name{
   margin-top: 10px;
@@ -335,10 +338,13 @@
   border: 1px solid #ccc;
   z-index: 1;
 }
+#commodity-list .button{
+  margin-top: 40px;
+}
 #commodity-list img{
   float: left;
   width: 50vh;
-  height: auto;
+  height: 50vh;
   padding: 10px;
 }
 #commodity-list .container{
@@ -352,23 +358,11 @@
 #commodity-list .Publishing-house{
   padding: 10px 0;
 }
-#commodity-list .button{
-  background: green;
-  margin-top: 10px;
-  padding: 5px 0;
-  border-radius: 10px;
-  font-size: 20px;
-  cursor: pointer;
-}
-
-#commodity-list .button:hover{
-  color: white;
-}
 
 /* insert到資料庫的商品書單 */
 #insert-commodity{
   position: fixed;
-  top:200px;
+  top:90px;
   right: 36%;
   padding: 30px;
   text-align: center;
@@ -387,16 +381,6 @@
 }
 #insert-commodity input{
   margin-bottom: 20px; 
-}
-#insert-commodity .button{
-  width: 25%;
-  background: green;
-  padding: 5px 0;
-  margin: 0 auto;
-  border-radius: 10px;
-  text-align: center;
-  font-size: 20px;
-  cursor: pointer;
 }
 
 /* 管理員修改資料 */
@@ -440,4 +424,9 @@
   text-align: center;
   font-size: 20px;
   cursor: pointer;
+}
+/* 上傳圖片預覽圖 */
+#insert-commodity img{
+  width: 50vh;
+  height: 35vh;
 }
