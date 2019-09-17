@@ -23,6 +23,7 @@ if(empty($_POST['email'])){//Email不可為空
     $fetchAll=$statement->fetchAll(PDO::FETCH_ASSOC);
     foreach ($fetchAll as $key => $row) {
         $_SESSION['customer'] = [
+            'id'=>$row['id'],
             'name'=>$row['name'],
             'email'=>$row['email'],
             'phone'=>$row['phone'],

@@ -98,10 +98,35 @@
 }
 #header #shopcart-Panel li,
 #shopping-list li{
-  display: flex;
-  padding: 10px;
+  list-style-type: none;
+  padding: 35px;
   margin: 10px;
   border: 1px solid #eee;
+}
+#header #shopcart-Panel li img{
+  width: 60px;
+  height: auto;
+  margin-top: -25px;
+  margin-right: 10px;
+}
+#header #shopcart-Panel li .content{
+  margin-top: -15px;
+  font-size: 1.1rem;
+}
+#header #shopcart-Panel li .price{
+  color: red;
+}
+#header #shopcart-Panel li img,
+#header #shopcart-Panel li .content{
+  float: left;
+}
+#header #shopcart-Panel li .price{
+  padding-right: 60px;
+}
+#header #shopcart-Panel li .price,
+#header #shopcart-Panel li .delete{
+  float: right;
+  margin-top: -25px;
 }
 #header #shopcart-Panel li .book-name,
 #header #shopcart-Panel li .delete,
@@ -264,7 +289,7 @@
   border-radius: 5px;
   border: 1px solid #eee;
   text-align: center;
-  z-index: 1;
+  z-index: 9999;
 }
 #signu-success .button{
   width: 40%;
@@ -362,7 +387,7 @@
 /* insert到資料庫的商品書單 */
 #insert-commodity{
   position: fixed;
-  top:90px;
+  top:0px;
   right: 36%;
   padding: 30px;
   text-align: center;

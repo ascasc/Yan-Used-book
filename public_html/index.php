@@ -1,7 +1,7 @@
-
 <?php include('header.php'); ?>
 <?php include('login_status.php');?>
 <?php include('commodity_data.php');?>
+<?php include('shopcart_data.php');?>
 <div id="panel">
   <div id="header" class="clearfix">
     <div class="logo">Y</div>
@@ -22,8 +22,11 @@
     </nav>
     <!-- 此為購物車 -->
     <div id="shopcart-Panel">
-      <p>你的購物車是空的</p>
       <!-- 此為購物車Template部分產生 -->
+      
+      <div class="container clearfix">
+        <p>你的購物車是空的</p>
+      </div>
       <div class="button">結帳</div>
     </div>
     <!-- 此為選單 -->
@@ -59,7 +62,7 @@
         <input type="email" name="email"><br>
         <label>密碼</label><br>
         <input type="password" name="password">
-        <input type="submit" value="註冊" class="button">
+        <input type="submit" value="登入" class="button">
       <center><a href="#">忘記密碼?</a></center>
     </form>
   </div>
@@ -111,7 +114,6 @@
     <div class="close">x</div>
     <h2>購物清單</h1>
       <!-- 此為購物清單Template部分產生 -->
-      
   </div>
   <!-- 此為insert到資料的commodity -->
   <?php if($login_level=='admin'){?>
@@ -150,7 +152,6 @@
     <!-- 商品清單 -->
     <div id="commodity-list"> 
      <div class="close">x</div>
-     <div class="button">加入購物車</div>
         <div class="container">
         <!-- 此為商品清單Template -->
         </div>  
@@ -179,9 +180,9 @@
 <!-- 購物車Template部分 -->
 <script id="shopcart-Panel-item-template" type="text/x-handlebars-template">
   <li>
-    <img src="http://lorempixel.com/50/50/" alt="">
-    <div class="content">Infinite Power 濃縮乳清蛋白</div>
-    <div class="price"><span>1</span>NT$<span>750</span></div>
+    <img src="{{img}}"" alt="{{img}}">
+    <div class="content">{{book_name}}</div>
+    <div class="price">NT${{price}}</div>
     <div class="delete">刪除</div>
   </li>
 </script>
@@ -209,12 +210,13 @@
 <!-- 商品清單Template部分 -->
 <script id="commodity-list-item-template" type="text/x-handlebars-template">
   <img src="{{img}}" alt="{{img}}">
-    <div class="content"  data="{{id}}">
+    <div class="content">
       <div class="book-name">{{book_name}}</div>
       <div class="author">作者：<span>{{author}}</span></div>
       <div class="Publishing-house">出版社：<span>{{Publishing_house}}</span></div>
       <div class="Publication-date">出版日期：<span>{{Publication_date}}</span></div>
       <div class="price">NT${{price}}</div>
+      <div class="button" data-id="{{id}}">加入購物車</div>
     </div>
 </script>
 
