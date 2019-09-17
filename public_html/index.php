@@ -179,11 +179,11 @@
 </script>
 <!-- 購物車Template部分 -->
 <script id="shopcart-Panel-item-template" type="text/x-handlebars-template">
-  <li>
+  <li data-id="{{id}}">
     <img src="{{img}}"" alt="{{img}}">
     <div class="content">{{book_name}}</div>
     <div class="price">NT${{price}}</div>
-    <div class="delete">刪除</div>
+    <div class="delete" data-id="{{id}}">刪除</div>
   </li>
 </script>
 
