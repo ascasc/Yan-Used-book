@@ -76,21 +76,23 @@ $(document).ready(function(){
       $(signu_success.el).addClass('open');
     } 
   };
-
-  $.each(commodities, function (index, commodity) {//進入首頁顯示商品書單
+  //進入首頁顯示商品書單
+  $.each(commodities, function (index, commodity) {
     commodity_UI = commodity_UI + commodity_template_compile(commodity);
   });
-  
+
+  //進入首頁顯示購物車
   $(commodity.el).find('.container ul.row').append(commodity_UI);
-  $.each(shopcart, function (index, shopcart) { //進入首頁顯示購物車
+  $.each(shopcart, function (index, shopcart) { 
     if(index>=0){
       $(shopcart_Panel.el).find('.container').html('');
     }
     shopcart_UI = shopcart_UI + shopcart_template_compile(shopcart);
   });
   $(shopcart_Panel.el).find('.container').append(shopcart_UI);
-  
-  if(login_status=='On'){//顯示是否為登入
+
+  //顯示是否為登入
+  if(login_status=='On'){
     public_signup_login.alert_msg_success('已登入狀態');
   }
   
@@ -178,16 +180,16 @@ $(document).ready(function(){
     .on('click', '#commodity-list .button', function(e) {//加入購物車
       e.preventDefault();
       var id = $(this).data('id');
-      var shopcart_UI ='';
+      var shopcart_add_UI ='';
       $.post("member/shopcart.php", {id:id}, function(){})
         .done(function(data, textStatus, jqXHR) {
           $.each(data, function (index, shopcart) { 
             if(index>=0){
               $(shopcart_Panel.el).find('.container').html('');
-              shopcart_UI = shopcart_UI + shopcart_template_compile(shopcart);
+              shopcart_add_UI = shopcart_add_UI + shopcart_template_compile(shopcart);
             }
           });
-          $(shopcart_Panel.el).find('.container').append(shopcart_UI);
+          $(shopcart_Panel.el).find('.container').append(shopcart_add_UI);
           $(commodity_list.el).find('.close').click();//關閉商品書單
           public_signup_login.alert_msg_success('加入購物車成功。');
         })
@@ -207,6 +209,32 @@ $(document).ready(function(){
         $(shopcart_Panel.el).find('.container').html('<p>你的購物車是空的</p>');
       } 
   })
+    .on('click', '#shopcart-Panel .button',function(e){//結帳
+      var shopcart_book_name ='';
+      var shopcart_book_price =0;
+      var shopcart_book_id ='';
+      $.each(shopcart, function (index, shopcarts) {
+        shopcart_book_name = shopcart_book_name + shopcarts.book_name +' ';
+        shopcart_book_price =shopcart_book_price + parseInt(shopcarts.price);
+      });
+      console.log(shopcart_book_name);
+      console.log(shopcart_book_price);
+      $.post("member/checkout.php", {book_name:shopcart_book_name, book_price:shopcart_book_price}, function(){})
+        .done(function(data, textStatus, jqXHR) {
+          public_signup_login.alert_msg_success('結帳成功。');
+        })
+        .fail(function(xhr, textStatus, errorThrown){
+          if(errorThrown =='Bad Request'){
+            public_signup_login.alert_msg_success(xhr.responseText);
+          }
+        });
+      $(shopcart_Panel.el).slideToggle(200); 
+      $(shopcart_Panel.el).find('.container').html('');
+      if($(shopcart_Panel.el).find('.container').html()==0)
+      {
+        $(shopcart_Panel.el).find('.container').html('<p>你的購物車是空的</p>');
+      }
+    })
     .on('click', '#Menu-Panel li', function(e){//登入後的修改資料
         e.preventDefault();
         if($(this).is('.update-member-nav')){

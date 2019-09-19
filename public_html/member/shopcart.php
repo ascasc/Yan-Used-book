@@ -15,6 +15,7 @@ $statement->bindValue(':commodity_id', $_POST['id'], PDO::PARAM_INT);
 $result = $statement->execute();
 $commodity_id = $statement->fetch(PDO::FETCH_ASSOC);
 if($commodity_id['commodity_id'] == $_POST['commodity_id'] || $commodity_id['customer_data_id'] !== $_SESSION['customer']['id']){//不重複insert書單的id
+
 	$sql = 'INSERT INTO shopcart (commodity_id, customer_data_id) VALUES(:commodity_id, :customer_data_id)';
 	$statement = $pdo->prepare($sql);
 	$statement->bindValue(':commodity_id', $_POST['id'], PDO::PARAM_INT);
