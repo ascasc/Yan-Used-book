@@ -9,12 +9,12 @@ try {
 	exit;
 }
 
-$sql = 'SELECT * FROM commodity ORDER BY id ASC';
+$sql = 'SELECT * FROM customer_data ORDER BY id ASC';
 $statement = $pdo->prepare($sql);
 $statement->execute();
-$commodity = $statement->fetchAll(PDO::FETCH_ASSOC);
+$admin_update_customer_datas= $statement->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <script>
-	var commodities = <?= json_encode($commodity, JSON_NUMERIC_CHECK)?>;
+	var admin_update_customer_datas = <?= json_encode($admin_update_customer_datas, JSON_NUMERIC_CHECK)?>;
 </script>

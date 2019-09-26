@@ -26,7 +26,7 @@ $email=filter_var($_POST['email'], FILTER_VALIDATE_EMAIL);//驗證email
     $statement->execute();
     $phone_fetch=$statement->fetch(PDO::FETCH_ASSOC);
 //Email與密碼是否在資料庫存在
-    $sql = 'SELECT email,password password FROM customer_data WHERE email=:email';
+    $sql = 'SELECT email,password FROM customer_data WHERE email=:email';
     $statement=$pdo->prepare($sql);
     $statement->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
     $statement->execute();

@@ -435,6 +435,7 @@
 #update-member-admin li:hover{
   background: rgb(184, 215, 240);
   border-radius: 10px;
+  cursor: pointer;
 }
 #update-member-admin span{
   margin-right: 30px;

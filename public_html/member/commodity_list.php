@@ -16,6 +16,6 @@ $commodity = $statement->fetch(PDO::FETCH_ASSOC);
 
 if($result){
     echo json_encode(['id'=>$commodity['id'], 'book_name'=> $commodity['book_name'], 'author'=> $commodity['author'],'Publishing_house'=> $commodity['Publishing_house']
-    ,'Publishing_date'=> $commodity['Publishing_date'],'price'=> $commodity['price'],'img'=> $commodity['img']]);
+    ,'Publication_date'=> $commodity['Publication_date'],'price'=> $commodity['price'],'img'=> $commodity['img']]);
 }
 ?>

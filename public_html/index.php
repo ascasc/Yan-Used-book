@@ -1,7 +1,8 @@
 <?php include('header.php'); ?>
-<?php include('login_status.php');?>
-<?php include('commodity_data.php');?>
-<?php include('shopcart_data.php');?>
+<?php include('data/login_status.php');?>
+<?php include('data/commodity_data.php');?>
+<?php include('data/shopcart_data.php');?>
+<?php include('data/admin_update_commodity_data.php');?>
 <div id="panel">
   <div id="header" class="clearfix">
     <div class="logo">Y</div>
@@ -221,17 +222,20 @@
 </script>
 
 <!-- 此為資料庫資料放入管理員修改資料Template部分 -->
-<script id="update-member-admin-SQL-item-template" type="text/x-handlebars-template">
+<script id="admin-update-commodity-data-item-template" type="text/x-handlebars-template">
   <li data-id="{{id}}">
-    <form>
-      <label>姓名：</label><span>{{name}}</span>
-      <label>Email：</label>
-      <input type="email" name="email" value="{{email}}">
-      <label>手機：</label>
-      <input type="text" name="phone" value="{{phone}">
-      <div class="button">修改</div>
-    </form>
+    <label>姓名：</label><span>{{name}}</span>
+    <label>Email：</label><span>{{email}}</span>
   </li>
+</script>
+<!-- 此為選擇資料庫資料放入管理員修改資料Template部分 -->
+<script id="admin-update-commodity-item-template" type="text/x-handlebars-template">
+  <form id="admin-update-commodity-form">
+    <input type="hidden" name="id" value="{{id}}">
+    <label>姓名：</label><span>{{name}}</span>
+    <label>Email：</label><input type="email" name="email" value="{{email}}">
+    <input type="submit" value="修改" class="button">
+  </form>
 </script>
 <!-- 此為資料庫資料放入修改資料Template部分 -->
 <script id="update-member-SQL-item-template" type="text/x-handlebars-template">
