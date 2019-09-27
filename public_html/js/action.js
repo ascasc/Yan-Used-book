@@ -6,7 +6,7 @@ $(document).ready(function(){
   // 商品書單清單
   var commodity_list_template = $('#commodity-list-item-template').html();
   var commodity_list_template_compile = Handlebars.compile(commodity_list_template);
-
+  var commodity_UI = '';
   //購物車
   var shopcart_template = $('#shopcart-Panel-item-template').html();
   var shopcart_template_compile = Handlebars.compile(shopcart_template);
@@ -19,7 +19,12 @@ $(document).ready(function(){
   //管理員選擇修改資料
   var admin_update_commodity_template = $('#admin-update-commodity-item-template').html();
   var admin_update_commodity_template_compile = Handlebars.compile(admin_update_commodity_template);
-
+  //管理員購物清單
+  var shopping_list_item_template = $('#shopping-list-item-template').html();
+  var shopping_list_item_template_compile = Handlebars.compile(shopping_list_item_template);
+  
+  //管理員購物清單狀態箱子數字
+  var shopping_list_admin_status_num=0;
   var panel={
     el: '#panel',
   };
@@ -63,11 +68,17 @@ $(document).ready(function(){
   var insert_commodity={
     el: '#insert-commodity',
   };
+  //進入首頁顯示管理員修改資料
   var update_member_admin={
     el:'#update-member-admin',
   };
+  //購物車系統
   var shopcart_Panel={
     el:'#shopcart-Panel',
+  };
+  //管理員購物清單
+  var shopping_list_admin={
+    el:'#shopping-list-admin',
   };
   // 主要為登入與註冊訊息物件使用
   var public_signup_login={
@@ -85,7 +96,7 @@ $(document).ready(function(){
     } 
   };
 
-  var commodity_UI = '';
+  
 
   //進入首頁顯示商品書單
   $.each(commodities, function (index, commodity) {
@@ -104,12 +115,7 @@ $(document).ready(function(){
   });
   $(shopcart_Panel.el).find('.container').append(shopcart_UI);
 
-  //進入首頁顯示管理員修改資料
-  $.each(admin_update_customer_datas, function (index, admin_update_customer_data) {
-    admin_update_commodity_data_UI = admin_update_commodity_data_UI + admin_update_commodity_data_template_compile(admin_update_customer_data);
-  });
-
-  $(update_member_admin.el).find('ul').append(admin_update_commodity_data_UI);
+  
   //顯示是否為登入
   if(login_status=='On'){
     public_signup_login.alert_msg_success('已登入狀態');
@@ -286,6 +292,15 @@ $(document).ready(function(){
         }
         if($(this).is('.update-member-admin-nav')){//開啟管理員修改會員資料
           $(update_member_admin.el).addClass('open');
+          $(update_member_admin.el).find('ul').html('');
+          console.log(admin_update_commodity_data_UI);
+          $.post("admin/admin_update_commodity_data.php",function (data, textStatus, jqXHR) {
+            admin_update_commodity_data_UI='';
+            $.each(data.data, function (index, datas) {
+              admin_update_commodity_data_UI = admin_update_commodity_data_UI + admin_update_commodity_data_template_compile(datas);
+            });
+            $(update_member_admin.el).find('ul').append(admin_update_commodity_data_UI);
+          });
         }
         if($(this).is('.sign-out')){//登出
           $.post("signup_login/sign-out.php");
@@ -305,6 +320,7 @@ $(document).ready(function(){
         $(this).closest(insert_commodity.el).find('img').removeClass('open');//關閉上傳圖片的名字
         $(this).closest(update_member_admin.el).removeClass('open');//關閉管理員修改會員資料
         $(this).siblings('#create_book_form ').find('input:not(.button)').val('');//關閉新增商品的val
+        $(this).closest(shopping_list_admin.el).removeClass('open');//關閉管理員購物清單
         public_signup_login.alert_msg_off();//關閉視窗訊息
     })
     .on('click', '#update-member-admin ul li', function(e) {//管理員選擇修改資料
@@ -321,7 +337,38 @@ $(document).ready(function(){
           var admin_update_commodity_template = admin_update_commodity_template_compile(admin_update_commodity);
           $('#update-member-admin').find('ul').append(admin_update_commodity_template);
       });
-  })
+    })
+    .on('click', '.shopping-list-admin-nav', function(e) {//管理員購物清單
+      e.preventDefault();
+      $(shopping_list_admin.el).addClass('open');
+      $(shopping_list_admin.el).find('ul').html('');
+      $.post("admin/shopping_list_admin.php",function (data, textStatus, jqXHR) {
+          console.log(data);
+          var shopping_list_item_UI ='';
+          $.each(data.data, function (indexInArray, datas) { 
+            shopping_list_item_UI = shopping_list_item_UI + shopping_list_item_template_compile(datas);
+          });
+          $(shopping_list_admin.el).find('ul').append(shopping_list_item_UI);
+      });
+    })
+    .on('click', '#shopping-list-admin ul li', function(e) {//管理員購物清單更改出貨狀態
+      e.preventDefault();
+      shopping_list_admin_status_num++;
+      var shopping_list_admin_status;
+      var id = $(this).data('id');
+      if(shopping_list_admin_status_num==1){
+        shopping_list_admin_status='已出貨';
+      }else if(shopping_list_admin_status_num==2){
+        shopping_list_admin_status='未出貨';
+        shopping_list_admin_status_num=0;
+      }
+      $(this).find('.shipment_status').html(shopping_list_admin_status);
+      $.post("admin/update-shopping-list-admin-status.php", {id:id,shipment_status:shopping_list_admin_status},
+        function (data, textStatus, jqXHR) {
+          console.log(data.id);
+          console.log(data.shipment_status);
+      });
+    })
     .on('change','#insert-commodity form .file_img', function(e){//預覽上傳圖片
       const file = this.files[0];//將上傳檔案轉換為base64字串
           

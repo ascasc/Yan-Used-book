@@ -211,7 +211,8 @@
 #commodity-list.open,
 #insert-commodity.open,
 #update-member-admin.open,
-#insert-commodity img.open{
+#insert-commodity img.open,
+#shopping-list-admin.open{
   display: block;
 }
 /* 關閉視窗 */
@@ -224,7 +225,8 @@
 #commodity-list,
 #insert-commodity,
 #update-member-admin,
-#insert-commodity img{
+#insert-commodity img,
+#shopping-list-admin{
   display: none;
 }
 
@@ -455,4 +457,37 @@
 #insert-commodity img{
   width: 50vh;
   height: 35vh;
+}
+
+/* 管理員購物清單 */
+#shopping-list-admin{
+  position: fixed;
+  top:20%;
+  right: 20%;
+  padding: 20px;
+  max-height: 400px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  overflow: auto;
+  background: white;
+  z-index: 1;
+}
+#shopping-list-admin h2{
+  text-align: center;
+}
+#shopping-list-admin img{
+  width: 60px;
+  height: auto;
+}
+#shopping-list-admin li{
+  list-style-type: none;
+  padding: 10px;
+}
+#shopping-list-admin li:hover{
+  background: rgb(184, 215, 240);
+  border-radius: 10px;
+  cursor: pointer;
+}
+#shopping-list-admin span{
+  margin: 0 10px;
 }

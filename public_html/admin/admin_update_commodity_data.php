@@ -1,5 +1,6 @@
 <?php
-include('../../db.php');
+header('Content-Type: application/json; charset=utf-8');
+include('../../../db.php');
 
 
 try {
@@ -11,10 +12,9 @@ try {
 
 $sql = 'SELECT * FROM customer_data ORDER BY id ASC';
 $statement = $pdo->prepare($sql);
-$statement->execute();
+$result = $statement->execute();
 $admin_update_customer_datas= $statement->fetchAll(PDO::FETCH_ASSOC);
+if($result){
+	echo json_encode(['data'=>$admin_update_customer_datas]);
+}
 ?>
-
-<script>
-	var admin_update_customer_datas = <?= json_encode($admin_update_customer_datas, JSON_NUMERIC_CHECK)?>;
-</script>

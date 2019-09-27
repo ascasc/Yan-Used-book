@@ -9,7 +9,7 @@ if(isset($_SESSION['customer'])){
     }else{
         $login_level ='admin';
     }
-}else{
+}else if(!isset($_SESSION['customer'])){
     $login_status ='Off';
 }
 ?>

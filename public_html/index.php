@@ -2,7 +2,6 @@
 <?php include('data/login_status.php');?>
 <?php include('data/commodity_data.php');?>
 <?php include('data/shopcart_data.php');?>
-<?php include('data/admin_update_commodity_data.php');?>
 <div id="panel">
   <div id="header" class="clearfix">
     <div class="logo">Y</div>
@@ -102,20 +101,19 @@
   <div id="update-member-admin">
     <div class="close">x</div>
     <h3>管理員修改會員資料</h3>
-    <div class="error-msg">
-      <div class="alert alert-danger">error</div>
-    </div>
     <ul>
       <!-- 此為資料庫資料放入管理員修改資料Template部分 -->
     </ul> 
   </div>
   <?php }?>
-  <!-- 此為購物清單 -->
+  <!-- 此為管理員購物清單 -->
+  <?php if($login_level=='admin'){?>
   <div id="shopping-list">
     <div class="close">x</div>
     <h2>購物清單</h1>
       <!-- 此為購物清單Template部分產生 -->
   </div>
+  <?php }?>
   <!-- 此為insert到資料的commodity -->
   <?php if($login_level=='admin'){?>
   <div id="insert-commodity">
@@ -142,20 +140,31 @@
     </form>
   </div>
   <?php }?>
+  <?php if($login_level=='admin'){?>
+  <div id="shopping-list-admin">
+    <div class="close">x</div>
+    <h2>管理員購物清單</h2>
+    <ul>
+      <!-- 此為管理員購物清單Template部分產生 -->
+    </ul>
+  </div>
+  <?php }?>
   <!-- 此為狀態訊息 -->
   <div id="signu-success">
     <p>註冊成功</p>
     <div class="button close">確定</div>
   </div>
-  <?php if($login_status ='On'){?>
+  
   <!-- 此為商品書單 -->
   <div id="commodity">
     <!-- 商品清單 -->
     <div id="commodity-list"> 
      <div class="close">x</div>
+     <?php if($login_status =='On'){?><div class="button" data-id="{{id}}">加入購物車</div> <?php }?>
         <div class="container">
         <!-- 此為商品清單Template -->
-        </div>  
+        </div>
+        
     </div>
     <em>商品書單</em>
     <div class="container clearfix">
@@ -164,8 +173,8 @@
       </ul>
     </div>
   </div>
-  <?php }?>
 </div>
+<!-- 導覽列判斷管理員與會員 -->
 <script id="nav-Panel-item-template" type="text/x-handlebars-template">
   <li class="<?php if($login_status=='On'){echo 'shop-cart-nav';}else if($login_status=='Off'){echo 'login-nav';}?>">
     <?php if($login_status=='On'){echo '購物車';}?>
@@ -178,27 +187,6 @@
     </ul>
   </li>
 </script>
-<!-- 購物車Template部分 -->
-<script id="shopcart-Panel-item-template" type="text/x-handlebars-template">
-  <li data-id="{{id}}">
-    <img src="{{img}}"" alt="{{img}}">
-    <div class="content">{{book_name}}</div>
-    <div class="price">NT${{price}}</div>
-    <div class="delete" data-id="{{id}}">刪除</div>
-  </li>
-</script>
-
-<!-- 購物清單Template部分 -->
-<script id="shopping-list-item-template" type="text/x-handlebars-template"> 
- <li>
- <!-- 分待付款.待出貨.待收貨.已完成Template部分 -->
-    <em>{{status}}</em>  
-    <img src="{{img}}" alt="{{img}}">
-    <div class="book-name">{{book-name}}</div>
-    <div class="price"><span>{{num}}</span>NT$<span>{{price}}</span></div>
-  </li>
-</script>
-
 <!-- 商品書單Template部分 -->
 <script id="commodity-item-template" type="text/x-handlebars-template">
   <li class="col-4" data-id="{{id}}">
@@ -217,17 +205,36 @@
       <div class="Publishing-house">出版社：<span>{{Publishing_house}}</span></div>
       <div class="Publication-date">出版日期：<span>{{Publication_date}}</span></div>
       <div class="price">NT${{price}}</div>
-      <div class="button" data-id="{{id}}">加入購物車</div>
     </div>
 </script>
 
-<!-- 此為資料庫資料放入管理員修改資料Template部分 -->
-<script id="admin-update-commodity-data-item-template" type="text/x-handlebars-template">
+<!-- 購物車Template部分 -->
+<script id="shopcart-Panel-item-template" type="text/x-handlebars-template">
   <li data-id="{{id}}">
-    <label>姓名：</label><span>{{name}}</span>
-    <label>Email：</label><span>{{email}}</span>
+    <img src="{{img}}"" alt="{{img}}">
+    <div class="content">{{book_name}}</div>
+    <div class="price">NT${{price}}</div>
+    <div class="delete" data-id="{{id}}">刪除</div>
   </li>
 </script>
+
+<!-- 管理員購物清單Template部分 -->
+<script id="shopping-list-item-template" type="text/x-handlebars-template"> 
+  <li data-id={{product_id}}>
+  <!-- 未付款.未出貨.未收貨.已收貨Template部分 -->
+    <em class="pay_status">{{pay_status}}</em>  
+    <em class="shipment_status">{{shipment_status}}</em>  
+    <span>{{book_name}}</span>
+    <span>{{name}}</span>
+    <span>{{phone}}</span>
+    <span>{{email}}</span>
+    <span>NT${{price}}</span>
+    <span>{{CVSStoreID}}</span>
+    <span>{{CVSAddress}}</span>
+    <span>{{CVSStoreName}}</span>
+  </li>
+</script>
+
 <!-- 此為選擇資料庫資料放入管理員修改資料Template部分 -->
 <script id="admin-update-commodity-item-template" type="text/x-handlebars-template">
   <form id="admin-update-commodity-form">
@@ -236,6 +243,14 @@
     <label>Email：</label><input type="email" name="email" value="{{email}}">
     <input type="submit" value="修改" class="button">
   </form>
+</script>
+
+<!-- 此為資料庫資料放入管理員修改資料Template部分 -->
+<script id="admin-update-commodity-data-item-template" type="text/x-handlebars-template">
+  <li data-id="{{id}}">
+    <label>姓名：</label><span>{{name}}</span>
+    <label>Email：</label><span>{{email}}</span>
+  </li>
 </script>
 <!-- 此為資料庫資料放入修改資料Template部分 -->
 <script id="update-member-SQL-item-template" type="text/x-handlebars-template">
