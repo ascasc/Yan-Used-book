@@ -9,7 +9,7 @@ try {
 	exit;
 }
 
-$sql = 'SELECT * FROM commodity ORDER BY id ASC';
+$sql = 'SELECT * FROM commodity INNER JOIN commodity_switch ON commodity.id=commodity_id ORDER BY commodity.id ASC';
 $statement = $pdo->prepare($sql);
 $statement->execute();
 $commodities= $statement->fetchAll(PDO::FETCH_ASSOC);

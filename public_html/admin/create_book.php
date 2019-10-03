@@ -48,6 +48,10 @@ else{
     $statement->bindValue(':price', $_POST['price'], PDO::PARAM_INT);
     $statement->bindValue(':img', $targetPath2, PDO::PARAM_STR);
     $result = $statement->execute();
+    $sql = 'INSERT INTO commodity_switch (commodity_id) VALUES(:commodity_id)';
+    $statement = $pdo->prepare($sql);
+    $statement->bindValue(':commodity_id', $pdo->lastInsertId(), PDO::PARAM_INT);
+    $result = $statement->execute();
     if(!$result){
         var_dump($pdo->errorInfo());
     }

@@ -10,18 +10,11 @@ try {
 	exit;
 }
 
-//結帳資料庫
-$sql = 'SELECT book_name, price, customer_data_id FROM product WHERE customer_data_id=:customer_data_id';
-$statement = $pdo->prepare($sql);
-$statement->bindValue(':customer_data_id', $_SESSION['customer']['id'], PDO::PARAM_INT);
-$result = $statement->execute();
-$product = $statement->fetch(PDO::FETCH_ASSOC);
-
 //購物車資料庫
-$sql = 'SELECT book_name, price FROM shopcart INNER JOIN commodity on commodity_id=commodity.id WHERE customer_data_id=:customer_data_id';
+$sql = 'SELECT book_name, price, commodity_id FROM shopcart INNER JOIN commodity on commodity_id=commodity.id WHERE customer_data_id=:customer_data_id';
 $statement = $pdo->prepare($sql);
 $statement->bindValue(':customer_data_id', $_SESSION['customer']['id'], PDO::PARAM_INT);
-$result = $statement->execute();
+$statement->execute();
 $shopcart = $statement->fetchAll(PDO::FETCH_ASSOC);
 //購物車書的名稱與價格名稱總結為明細表
 $shopcart_book_name;
@@ -29,30 +22,42 @@ $shopcart_price;
 foreach ($shopcart as $key => $shopcarts) {
 	$shopcart_book_name = $shopcart_book_name .' '. $shopcarts['book_name'];
 	$shopcart_price = $shopcart_price + $shopcarts['price'];
+	$shopcart_commodity_id[] = $shopcarts['commodity_id'];
 }
-//偵測在結帳資料庫有無此資料庫，如沒有添加進去結帳資料庫
-if($product['book_name'] !==$shopcart_book_name && $product['book_price'] !==$shopcart_price){
+if(empty($shopcart_commodity_id)){
+	http_response_code(400);
+	echo '購物車為空，請選擇商品加入到購物車在進行結帳。';
+}else{
 	$sql = 'INSERT INTO product (book_name, price, customer_data_id) VALUES(:book_name, :price, :customer_data_id)';
 	$statement = $pdo->prepare($sql);
 	$statement->bindValue(':book_name', $shopcart_book_name, PDO::PARAM_STR);
 	$statement->bindValue(':price', $shopcart_price, PDO::PARAM_STR);
 	$statement->bindValue(':customer_data_id', $_SESSION['customer']['id'], PDO::PARAM_INT);
-	$result = $statement->execute();
+	$result=$statement->execute();
+	//出貨狀態
 	$sql = 'INSERT INTO shopping_list_status (product_id) VALUES(:product_id)';
 	$statement = $pdo->prepare($sql);
 	$statement->bindValue(':product_id', $pdo->lastInsertId(), PDO::PARAM_INT);
-	$result = $statement->execute();
+	$result=$statement->execute();
+	//關掉首頁的商品
+	foreach ($shopcart as $key => $shopcarts) {
+		$sql = 'UPDATE commodity_switch SET switch=:switch WHERE commodity_id=:commodity_id';
+		$statement = $pdo->prepare($sql);
+		$statement->bindValue(':commodity_id', $shopcarts['commodity_id'], PDO::PARAM_INT);
+		$statement->bindValue(':switch', 0, PDO::PARAM_INT);
+		$result=$statement->execute();
+		//刪除其他使用者購物車存在的商品
+		$sql = 'DELETE FROM shopcart WHERE commodity_id=:commodity_id';
+		$statement = $pdo->prepare($sql);
+		$statement->bindValue(':commodity_id', $shopcarts['commodity_id'], PDO::PARAM_INT);
+		$result=$statement->execute();
+		$data[]='.'.$shopcarts['commodity_id'];
+	}
 	if($result){
-		echo json_encode(['name'=>'結帳成功。']);
+		echo json_encode(['name'=>'結帳成功。', 'data'=>$data]);
 	}else{
 		var_dump($pdo->errorInfo());
 	}
-}else if($product['book_name'] =='' && $product['book_price'] ==''){
-	http_response_code(400);
-	echo '購物車為空，請選擇商品加入到購物車在進行結帳。';
-}else{
-	http_response_code(400);
-	echo '此商品已結帳過了。';
 }
 //刪除購物車
 $sql = 'DELETE FROM shopcart WHERE customer_data_id=:customer_data_id';

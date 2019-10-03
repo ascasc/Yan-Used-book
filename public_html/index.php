@@ -160,7 +160,7 @@
     <!-- 商品清單 -->
     <div id="commodity-list"> 
      <div class="close">x</div>
-     <?php if($login_status =='On'){?><div class="button" data-id="{{id}}">加入購物車</div> <?php }?>
+     <?php if($login_status =='On'){?><div class="button">加入購物車</div> <?php }?>
         <div class="container">
         <!-- 此為商品清單Template -->
         </div>
@@ -189,17 +189,19 @@
 </script>
 <!-- 商品書單Template部分 -->
 <script id="commodity-item-template" type="text/x-handlebars-template">
-  <li class="col-4" data-id="{{id}}">
+{{#if switch}}
+  <li class="col-4 {{commodity_id}}" data-id="{{commodity_id}}">
     <img src="{{img}}" alt="{{img}}">
     <div class="book-name">{{book_name}}</div>
     <div class="price">NT${{price}}</div>
   </li>
+{{/if}}
 </script>
 
 <!-- 商品清單Template部分 -->
 <script id="commodity-list-item-template" type="text/x-handlebars-template">
   <img src="{{img}}" alt="{{img}}">
-    <div class="content">
+    <div class="content" data-id="{{id}}">
       <div class="book-name">{{book_name}}</div>
       <div class="author">作者：<span>{{author}}</span></div>
       <div class="Publishing-house">出版社：<span>{{Publishing_house}}</span></div>

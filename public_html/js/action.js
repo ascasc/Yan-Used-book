@@ -2,11 +2,11 @@ $(document).ready(function(){
   // 商品書單
   var commodity_template = $('#commodity-item-template').html();
   var commodity_template_compile = Handlebars.compile(commodity_template);
-  
+  var commodity_UI = '';
   // 商品書單清單
   var commodity_list_template = $('#commodity-list-item-template').html();
   var commodity_list_template_compile = Handlebars.compile(commodity_list_template);
-  var commodity_UI = '';
+  
   //購物車
   var shopcart_template = $('#shopcart-Panel-item-template').html();
   var shopcart_template_compile = Handlebars.compile(shopcart_template);
@@ -95,9 +95,6 @@ $(document).ready(function(){
       $(signu_success.el).addClass('open');
     } 
   };
-
-  
-
   //進入首頁顯示商品書單
   $.each(commodities, function (index, commodity) {
     commodity_UI = commodity_UI + commodity_template_compile(commodity);
@@ -222,7 +219,7 @@ $(document).ready(function(){
     })
     .on('click', '#commodity-list .button', function(e) {//加入購物車
       e.preventDefault();
-      var id = $(this).data('id');
+      var id = $(this).siblings('.container').find('.content').data('id');
       var shopcart_add_UI ='';
       $.post("member/shopcart.php", {id:id}, function(){})
         .done(function(data, textStatus, jqXHR) {
@@ -255,6 +252,9 @@ $(document).ready(function(){
     .on('click', '#shopcart-Panel .button',function(e){//結帳
       $.post("member/checkout.php", function(){})
         .done(function(data, textStatus, jqXHR) {
+          $.each(data.data, function (indexInArray, datas) { 
+            $('#commodity .container ul').find(datas).remove();
+          });
           public_signup_login.alert_msg_success(data.name);
         })
         .fail(function(xhr, textStatus, errorThrown){
@@ -270,7 +270,7 @@ $(document).ready(function(){
       }
       $.post("member/Select_Ｍap_data.php", function(){})
         .done(function(data, textStatus, jqXHR) {
-          public_signup_login.alert_msg_success(data.name);
+
         })
         .fail(function(xhr, textStatus, errorThrown){
           if(errorThrown =='Bad Request'){

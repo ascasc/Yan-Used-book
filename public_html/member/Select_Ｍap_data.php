@@ -16,6 +16,6 @@ $Map_data = $statement->fetch(PDO::FETCH_ASSOC);
 if($Map_data['customer_data_id']!==$_SESSION['customer']['id']){
 	http_response_code(400);
 }else{
-	echo json_encode(['name'=>'結帳成功，已導入過電子地圖。']);
+	echo json_encode(['name'=>'已導入過電子地圖。']);
 }
 ?>
