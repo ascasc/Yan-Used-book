@@ -7,8 +7,8 @@ try {
 	echo "Database connection failed.";
 	exit;
 }
-
-$sql = 'UPDATE shopping_list_status SET shipment_status=:shipment_status WHERE product_id=:id';
+//出貨狀態
+$sql = 'UPDATE product_status SET shipment_status=:shipment_status WHERE product_id=:id';
 $statement = $pdo->prepare($sql);
 $statement->bindValue(':id', $_POST['id'], PDO::PARAM_INT);
 $statement->bindValue(':shipment_status', $_POST['shipment_status'], PDO::PARAM_STR);
