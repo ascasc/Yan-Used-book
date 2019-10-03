@@ -35,7 +35,7 @@ if(empty($shopcart_commodity_id)){
 	$statement->bindValue(':customer_data_id', $_SESSION['customer']['id'], PDO::PARAM_INT);
 	$result=$statement->execute();
 	//出貨狀態
-	$sql = 'INSERT INTO shopping_list_status (product_id) VALUES(:product_id)';
+	$sql = 'INSERT INTO product_status (product_id) VALUES(:product_id)';
 	$statement = $pdo->prepare($sql);
 	$statement->bindValue(':product_id', $pdo->lastInsertId(), PDO::PARAM_INT);
 	$result=$statement->execute();
