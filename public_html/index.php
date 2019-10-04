@@ -92,8 +92,20 @@
   <?php }?>
   <!-- 此為修改個人資料 -->
   <?php if($login_level=='member'){?>
-  <div id="update-member" class="login-signup">
-    <!-- 此為資料庫資料放入修改資料Template部分 -->
+  <div id="update-member">
+    <div class="close">x</div>
+    <h3>修改會員資料</h3>
+    <div class="error-msg">
+		  <div class="alert alert-danger">error</div>
+    </div>
+    <ul class="Menu clearfix">
+      <li><a href="#update-data" class="curren">修改資料</a></li>
+      <li><a href="#update-password">修改密碼</a></li>
+    </ul>
+    <ul class="content">
+      <!-- 此為資料庫資料放入修改資料Template部分 -->
+    </ul>
+    
   </div>
   <?php }?>
   <!-- 此為管理員修改資料 -->
@@ -256,19 +268,22 @@
 </script>
 <!-- 此為資料庫資料放入修改資料Template部分 -->
 <script id="update-member-SQL-item-template" type="text/x-handlebars-template">
-  <div class="close">x</div>
-  <h3>修改會員資料</h3>
-  <div class="error-msg">
-		<div class="alert alert-danger">error</div>
-  </div>
-  <form>
-    <label>姓名：</label><span>{{name}}</span><br><br>
-    <label>Email</label><br>
-    <input type="email" name="email" value="{{email}}"><br>
-    <label>手機</label><br>
-    <input type="text" name="phone" value="{{phone}}"><br>
-    <div class="button">修改</div>
-  </form>
+  <li id="update-data">
+    <form id="update-data-form">
+      <label>姓名:</label>&emsp;<input type="text" name="name" value="{{name}}"><br><br>
+      <label>Email:</label>&ensp;<input type="email" name="email" value="{{email}}"><br><br>
+      <label>手機:</label>&emsp;<input type="text" name="phone" value="0{{phone}}"><br><br>
+      <input type="submit" value="修改資料" class="button">
+    </form>
+  </li>
+  <li id="update-password">
+    <form id="update-password-form">
+      <label>目&ensp;前&ensp;密&ensp;碼:</label>&emsp;<input type="password" name="now_password"><br><br>
+      <label>修&ensp;改&ensp;密&ensp;碼:</label>&emsp;<input type="password" name="password"><br><br>
+      <label>確認修改密碼:</label>&ensp;&nbsp;<input type="password" name="two_password" class="two_password"><br><br>
+      <input type="submit" value="修改密碼" class="button">
+    </form>
+  </li>
 </script>
 <!-- 此為管理員與會員選單Template部分 -->
 <script id="Menu-Panel-member-item-template" type="text/x-handlebars-template">

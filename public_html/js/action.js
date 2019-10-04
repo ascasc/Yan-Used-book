@@ -22,6 +22,9 @@ $(document).ready(function(){
   //管理員購物清單
   var shopping_list_item_template = $('#shopping-list-item-template').html();
   var shopping_list_item_template_compile = Handlebars.compile(shopping_list_item_template);
+  //修改會員資料
+  var update_member_SQL_item_template= $('#update-member-SQL-item-template').html();
+  var update_member_SQL_item_template_compile = Handlebars.compile(update_member_SQL_item_template);
   
   //管理員購物清單狀態箱子數字
   var shopping_list_admin_status_num=0;
@@ -111,7 +114,6 @@ $(document).ready(function(){
     
   });
   $(shopcart_Panel.el).find('.container').append(shopcart_UI);
-
   
   //顯示是否為登入
   if(login_status=='On'){
@@ -186,6 +188,18 @@ $(document).ready(function(){
               $(update_member_admin.el).find('ul').append(admin_update_commodity_data_UI);
             })
             .fail(function(xhr, textStatus, errorThrown){//登入錯誤回傳到HTML錯誤訊息
+              if(errorThrown =='Bad Request'){
+                public_signup_login.alert_msg_success(xhr.responseText);
+              }
+          });
+        }
+        if($(this).is('#update-data-form')){//修改會員資料
+          var data = $(this).serialize();
+          $.post("member/update-data.php", data, function(){})
+            .done(function(data, textStatus, jqXHR) {
+              public_signup_login.alert_msg_success(data.data);
+            })
+            .fail(function(xhr, textStatus, errorThrown){//錯誤回傳到HTML錯誤訊息
               if(errorThrown =='Bad Request'){
                 public_signup_login.alert_msg_success(xhr.responseText);
               }
@@ -283,6 +297,11 @@ $(document).ready(function(){
         e.preventDefault();
         if($(this).is('.update-member-nav')){
           $(update_member.el).addClass('open');
+          $('#update-member').find('.content').html(' ');
+          $.post("member/Select_customer_data.php",function (data, textStatus, jqXHR) {
+            $('#update-member').find('.content').append(update_member_SQL_item_template_compile(data));
+            $('#update-member').find('ul.content li[id!=update-data]').hide();
+          });
         }
         if($(this).is('.shopping-list-nav')){//開啟購物清單
           $(shopping_list.el).addClass('open');
@@ -323,6 +342,13 @@ $(document).ready(function(){
         $(this).closest(shopping_list_admin.el).removeClass('open');//關閉管理員購物清單
         public_signup_login.alert_msg_off();//關閉視窗訊息
     })
+    .on('click','#update-member .Menu li a', function(e) {
+      $('#update-member').find('.content li').hide();
+      $($(this).attr('href')).show();
+      $('.curren').removeClass('curren');
+      $(this).addClass('curren');
+      return false;
+    })
     .on('click', '#update-member-admin ul li', function(e) {//管理員選擇修改資料
       e.preventDefault();
       var id = $(this).data('id');
@@ -343,7 +369,6 @@ $(document).ready(function(){
       $(shopping_list_admin.el).addClass('open');
       $(shopping_list_admin.el).find('ul').html('');
       $.post("admin/shopping_list_admin.php",function (data, textStatus, jqXHR) {
-          console.log(data);
           var shopping_list_item_UI ='';
           $.each(data.data, function (indexInArray, datas) { 
             shopping_list_item_UI = shopping_list_item_UI + shopping_list_item_template_compile(datas);

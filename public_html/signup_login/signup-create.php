@@ -23,7 +23,7 @@ if(empty($_POST['name'])){//姓名不可為空
     new HttpStatusCode(400,'Email不可為空');
 }else if(!$email){//Email格式錯誤
     new HttpStatusCode(400,'Email格式錯誤');
-}else if($_POST['email'] == $fetchAll['email']){//此Email已存在
+}else if($_POST['email'] == $fetch['email']){//此Email已存在
     new HttpStatusCode(400,'此Email已存在');
 }else if(empty($_POST['phone'])){//手機不可為空
     new HttpStatusCode(400,'手機不可為空');
