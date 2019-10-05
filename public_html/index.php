@@ -95,9 +95,6 @@
   <div id="update-member">
     <div class="close">x</div>
     <h3>修改會員資料</h3>
-    <div class="error-msg">
-		  <div class="alert alert-danger">error</div>
-    </div>
     <ul class="Menu clearfix">
       <li><a href="#update-data" class="curren">修改資料</a></li>
       <li><a href="#update-password">修改密碼</a></li>
@@ -108,17 +105,7 @@
     
   </div>
   <?php }?>
-  <!-- 此為管理員修改資料 -->
-  <?php if($login_level=='admin'){?>
-  <div id="update-member-admin">
-    <div class="close">x</div>
-    <h3>管理員修改會員資料</h3>
-    <ul>
-      <!-- 此為資料庫資料放入管理員修改資料Template部分 -->
-    </ul> 
-  </div>
-  <?php }?>
-  <!-- 此為管理員購物清單 -->
+  <!-- 此為會員購物清單 -->
   <?php if($login_level=='admin'){?>
   <div id="shopping-list">
     <div class="close">x</div>
@@ -153,6 +140,7 @@
   </div>
   <?php }?>
   <?php if($login_level=='admin'){?>
+  <!-- 管理員購物清單 -->
   <div id="shopping-list-admin">
     <div class="close">x</div>
     <h2>管理員購物清單</h2>
@@ -266,7 +254,7 @@
     <label>Email：</label><span>{{email}}</span>
   </li>
 </script>
-<!-- 此為資料庫資料放入修改資料Template部分 -->
+<!-- 此為資料庫資料放入會員修改資料Template部分 -->
 <script id="update-member-SQL-item-template" type="text/x-handlebars-template">
   <li id="update-data">
     <form id="update-data-form">

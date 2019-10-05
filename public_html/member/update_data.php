@@ -33,7 +33,7 @@ if(empty($_POST['name'])){//姓名不可為空
 }else if($_POST['phone'] !== $_SESSION['customer']['phone'] && $_POST['phone'] == $phone_fetch['phone']){//此手機號碼已存在
     new HttpStatusCode(400,'此手機號碼已存在');
 }else{
-	$sql = 'UPDATE customer_data SET `name`=:name, email=:email, phone=:phone WHERE id=:id ';
+	$sql = 'UPDATE customer_data SET `name`=:name, email=:email, phone=:phone WHERE id=:id';
 	$statement = $pdo->prepare($sql);
 	$statement->bindValue(':id', $_SESSION['customer']['id'], PDO::PARAM_INT);
 	$statement->bindValue(':name', $_POST['name'], PDO::PARAM_STR);

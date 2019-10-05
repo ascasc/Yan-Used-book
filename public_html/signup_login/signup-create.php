@@ -51,7 +51,7 @@ if(empty($_POST['name'])){//姓名不可為空
     $statement->bindValue(':name', $_POST['name'], PDO::PARAM_STR);
     $statement->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
     $statement->bindValue(':phone', $_POST['phone'], PDO::PARAM_STR);
-    $statement->bindValue(':password', password_hash($_POST['password'], PASSWORD_BCRYPT));
+    $statement->bindValue(':password', $passwordHash, PDO::PARAM_STR);
     $result =$statement->execute();
     if($result){
         echo json_encode(['name'=>'註冊成功'], JSON_NUMERIC_CHECK);

@@ -195,11 +195,24 @@ $(document).ready(function(){
         }
         if($(this).is('#update-data-form')){//修改會員資料
           var data = $(this).serialize();
-          $.post("member/update-data.php", data, function(){})
+          $.post("member/update_data.php", data, function(){})
             .done(function(data, textStatus, jqXHR) {
               public_signup_login.alert_msg_success(data.data);
             })
             .fail(function(xhr, textStatus, errorThrown){//錯誤回傳到HTML錯誤訊息
+              if(errorThrown =='Bad Request'){
+                public_signup_login.alert_msg_success(xhr.responseText);
+              }
+          });
+        }
+        if($(this).is('#update-password-form')){
+          var data = $(this).serialize();
+          $.post("member/update_password.php", data, function () {})
+            .done(function(data, textStatus, jqXHR) {
+              public_signup_login.alert_msg_success(data.data);
+              $(update_member.el).find('.close').click();
+            })
+            .fail(function(xhr, textStatus, errorThrown) {
               if(errorThrown =='Bad Request'){
                 public_signup_login.alert_msg_success(xhr.responseText);
               }
