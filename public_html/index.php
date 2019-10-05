@@ -105,6 +105,16 @@
     
   </div>
   <?php }?>
+  <!-- 此為管理員修改資料 -->
+  <?php if($login_level=='admin'){?>
+  <div id="update-member-admin">
+    <div class="close">x</div>
+    <h3>管理員修改會員資料</h3>
+    <ul>
+      <!-- 此為管理員購物清單Template部分產生 -->
+    </ul>
+  </div>
+  <?php }?>
   <!-- 此為會員購物清單 -->
   <?php if($login_level=='admin'){?>
   <div id="shopping-list">
@@ -139,11 +149,13 @@
     </form>
   </div>
   <?php }?>
-  <?php if($login_level=='admin'){?>
-  <!-- 管理員購物清單 -->
+  <?php if($login_level=='admin' || $login_level=='member'){?>
+  <!-- 管理員與會員購物清單 -->
   <div id="shopping-list-admin">
     <div class="close">x</div>
-    <h2>管理員購物清單</h2>
+    <h2>
+      <?php if($login_level=='admin'){echo '管理員購物清單';}else if($login_level=='member'){echo '會員員購物清單';}?>
+    </h2>
     <ul>
       <!-- 此為管理員購物清單Template部分產生 -->
     </ul>
@@ -222,7 +234,7 @@
 
 <!-- 管理員購物清單Template部分 -->
 <script id="shopping-list-item-template" type="text/x-handlebars-template"> 
-  <li data-id={{product_id}}>
+  <li data-id={{product_id}} class="<?php if($login_level=='admin') echo 'admin'; ?>">
   <!-- 未付款.未出貨.未收貨.已收貨Template部分 -->
     <em class="pay_status">{{pay_status}}</em>  
     <em class="shipment_status">{{shipment_status}}</em>  

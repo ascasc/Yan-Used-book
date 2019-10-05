@@ -205,7 +205,7 @@ $(document).ready(function(){
               }
           });
         }
-        if($(this).is('#update-password-form')){
+        if($(this).is('#update-password-form')){//修改密碼
           var data = $(this).serialize();
           $.post("member/update_password.php", data, function () {})
             .done(function(data, textStatus, jqXHR) {
@@ -299,7 +299,7 @@ $(document).ready(function(){
         .done(function(data, textStatus, jqXHR) {
 
         })
-        .fail(function(xhr, textStatus, errorThrown){
+        .fail(function(xhr, textStatus, errorThrown){//電子地圖
           if(errorThrown =='Bad Request'){
             window.open('ecpay/sample_CvsMap.php', '電子地圖', config='height=800,width=1020');
           }
@@ -308,7 +308,7 @@ $(document).ready(function(){
     })
     .on('click', '#Menu-Panel li', function(e){//登入後的修改資料
         e.preventDefault();
-        if($(this).is('.update-member-nav')){
+        if($(this).is('.update-member-nav')){//修改資料
           $(update_member.el).addClass('open');
           $('#update-member').find('.content').html(' ');
           $.post("member/Select_customer_data.php",function (data, textStatus, jqXHR) {
@@ -325,7 +325,6 @@ $(document).ready(function(){
         if($(this).is('.update-member-admin-nav')){//開啟管理員修改會員資料
           $(update_member_admin.el).addClass('open');
           $(update_member_admin.el).find('ul').html('');
-          console.log(admin_update_commodity_data_UI);
           $.post("admin/admin_update_commodity_data.php",function (data, textStatus, jqXHR) {
             admin_update_commodity_data_UI='';
             $.each(data.data, function (index, datas) {
@@ -355,7 +354,7 @@ $(document).ready(function(){
         $(this).closest(shopping_list_admin.el).removeClass('open');//關閉管理員購物清單
         public_signup_login.alert_msg_off();//關閉視窗訊息
     })
-    .on('click','#update-member .Menu li a', function(e) {
+    .on('click','#update-member .Menu li a', function(e) {//會員修改資料切換(修改資料，修改密碼)
       $('#update-member').find('.content li').hide();
       $($(this).attr('href')).show();
       $('.curren').removeClass('curren');
@@ -383,13 +382,26 @@ $(document).ready(function(){
       $(shopping_list_admin.el).find('ul').html('');
       $.post("admin/shopping_list_admin.php",function (data, textStatus, jqXHR) {
           var shopping_list_item_UI ='';
-          $.each(data.data, function (indexInArray, datas) { 
+          $.each(data.data, function (index, datas) { 
             shopping_list_item_UI = shopping_list_item_UI + shopping_list_item_template_compile(datas);
           });
           $(shopping_list_admin.el).find('ul').append(shopping_list_item_UI);
       });
     })
-    .on('click', '#shopping-list-admin ul li', function(e) {//管理員購物清單更改出貨狀態
+    .on('click', '.shopping-list-nav', function(e) {//會員購物清單(視窗與管理員購物清單共用)
+      e.preventDefault();
+      $(shopping_list_admin.el).addClass('open');
+      $(shopping_list_admin.el).find('ul').html('');
+      $.post("member/shopping_list.php",function (data, textStatus, jqXHR) {
+        var shopping_list_item_UI ='';
+        $.each(data.data, function (index, datas) { 
+          shopping_list_item_UI = shopping_list_item_UI + shopping_list_item_template_compile(datas);
+        });
+        $(shopping_list_admin.el).find('ul').append(shopping_list_item_UI);
+        $(shopping_list_admin.el).find('ul li[class!=admin]').css('cursor', 'auto');
+      });
+    })
+    .on('click', '#shopping-list-admin ul li.admin', function(e) {//管理員購物清單更改出貨狀態
       e.preventDefault();
       shopping_list_admin_status_num++;
       var shopping_list_admin_status;
