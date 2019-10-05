@@ -98,6 +98,7 @@
     <ul class="Menu clearfix">
       <li><a href="#update-data" class="curren">修改資料</a></li>
       <li><a href="#update-password">修改密碼</a></li>
+      <li><a href="#update-map">修改寄貨門市</a></li>
     </ul>
     <ul class="content">
       <!-- 此為資料庫資料放入修改資料Template部分 -->
@@ -283,6 +284,12 @@
       <label>確認修改密碼:</label>&ensp;&nbsp;<input type="password" name="two_password" class="two_password"><br><br>
       <input type="submit" value="修改密碼" class="button">
     </form>
+  </li>
+  <li id="update-map">
+    <label>門市店號:</label><em>{{CVSStoreID}}</em><br><br>
+    <label>門市名稱:</label><em>{{CVSStoreName}}</em><br><br>
+    <label>門市地址:</label><em>{{CVSAddress}}</em>
+    <div class="button">修改寄貨門市</div>
   </li>
 </script>
 <!-- 此為管理員與會員選單Template部分 -->

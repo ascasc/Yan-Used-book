@@ -435,6 +435,12 @@
 #update-member .content{
   list-style-type: none;
 }
+#update-member .content li{
+  text-align: center;
+}
+#update-member .content li#update-map .button{
+  margin-left: -40px;
+}
 #update-member h3{
   text-align: center;
 }

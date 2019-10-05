@@ -8,7 +8,7 @@ try {
 	echo "Database connection failed.";
 	exit;
 }
-$sql = 'SELECT `name`, email, `phone` FROM customer_data WHERE id=:id ';
+$sql = 'SELECT `name`, email, `phone`,CVSStoreID, CVSStoreName, CVSAddress FROM customer_data INNER JOIN Map_data on customer_data.id = Map_data.customer_data_id WHERE customer_data.id=:id ';
 $statement = $pdo->prepare($sql);
 $statement->bindValue(':id', $_SESSION['customer']['id'], PDO::PARAM_INT);
 $result = $statement->execute();
