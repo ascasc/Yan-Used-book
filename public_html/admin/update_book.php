@@ -9,9 +9,7 @@ try {
 	exit;
 }
 
-if(!is_uploaded_file($_FILES['file_img']['tmp_name'])){
-    new HttpStatusCode(400,'請選擇檔案');
-}else if(empty($_POST['book_name'])){
+if(empty($_POST['book_name'])){
     new HttpStatusCode(400, '書名不可為空');
 }
 else if(empty($_POST['author'])){
@@ -38,9 +36,9 @@ else{
     }else{
         new HttpStatusCode(400, '上傳失敗');
     }
-    $sql = 'INSERT INTO commodity (book_name, author, Publishing_house, Publication_date, price, img, Introduction, about_the_author, a_list, details)
-    VALUES(:book_name, :author, :Publishing_house, :Publication_date, :price, :img, :Introduction, :about_the_author , :a_list, :details)';
+    $sql = 'UPDATE commodity SET book_name=:book_name, author=:author, Publishing_house=:Publishing_house, Publication_date=:Publication_date, price=:price, img=:img, Introduction=:Introduction, about_the_author=:about_the_author, a_list=:a_list, details=:details WHERE id=:id';
     $statement = $pdo->prepare($sql);
+    $statement->bindValue(':id', $_POST['id'], PDO::PARAM_INT);
     $statement->bindValue(':book_name', $_POST['book_name'], PDO::PARAM_STR);
     $statement->bindValue(':author', $_POST['author'], PDO::PARAM_STR);
     $statement->bindValue(':Publishing_house', $_POST['Publishing_house'], PDO::PARAM_STR);
@@ -51,10 +49,6 @@ else{
     $statement->bindValue(':about_the_author', $_POST['about_the_author'], PDO::PARAM_STR);
     $statement->bindValue(':a_list', $_POST['a_list'], PDO::PARAM_STR);
     $statement->bindValue(':details', $_POST['details'], PDO::PARAM_STR);
-    $result = $statement->execute();
-    $sql = 'INSERT INTO commodity_switch (commodity_id) VALUES(:commodity_id)';
-    $statement = $pdo->prepare($sql);
-    $statement->bindValue(':commodity_id', $pdo->lastInsertId(), PDO::PARAM_INT);
     $result = $statement->execute();
     if(!$result){
         var_dump($pdo->errorInfo());

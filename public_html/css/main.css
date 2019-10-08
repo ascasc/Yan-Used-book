@@ -1,3 +1,13 @@
+/* textarea */
+textarea {
+  resize : none;
+  width:80vh;
+  height:40vh;
+}
+textarea.details{
+  width:40vh;
+  height:10vh;
+}
 /* 按鈕 */
 #panel .button{
   background: green;
@@ -348,47 +358,68 @@
 /* 商品清單 */
 #commodity-list{
   position: fixed;
-  top: 200px;
-  right: 25%;
+  top: 15%;
+  left: 0;
   padding: 30px;
-  background: white;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  z-index: 1;
-}
-#commodity-list .button{
-  margin-top: 40px;
-}
-#commodity-list img{
-  float: left;
-  width: 50vh;
-  height: 50vh;
-  padding: 10px;
-}
-#commodity-list .container{
-  margin-top: 40px;
-}
-#commodity-list .content{
-  float: left;
-  padding: 10px;
-}
-#commodity-list .book-name,
-#commodity-list .Publishing-house{
-  padding: 10px 0;
-}
-
-/* insert到資料庫的商品書單 */
-#insert-commodity{
-  position: fixed;
-  top:0px;
-  right: 36%;
-  padding: 30px;
+  width: 980px;
+  max-height: 80vh;
+  overflow: auto;
   text-align: center;
   border-radius: 10px;
   background: white;
   border: 1px solid #ccc;
   z-index: 1;
 }
+#commodity-list .close{
+  position: fixed;
+  left: 940px;
+} 
+#commodity-list .button{
+  margin-top: 40px;
+}
+#commodity-list img{
+  width: 50vh;
+  height: 50vh;
+  padding: 10px;
+  margin: 0 auto;
+}
+#commodity-list .container{
+  margin-top: 40px;
+}
+#commodity-list .content{
+  padding: 10px;
+}
+#commodity-list .book-name,
+#commodity-list .Publishing-house{
+  padding: 10px 0;
+}
+/* 商品清單內容使用空白與換行 */
+div.Introduction,
+div.about_the_author,
+div.a_list,
+div.details{
+  white-space: pre-wrap;
+  text-align:justify;
+}
+
+/* insert到資料庫的商品書單 */
+#insert-commodity{
+  position: fixed;
+  top: 15%;
+  right: 26%;
+  padding: 30px;
+  max-height: 80vh;
+  overflow: auto;
+  text-align: center;
+  border-radius: 10px;
+  background: white;
+  border: 1px solid #ccc;
+  z-index: 1;
+}
+#insert-commodity .close{
+  position: fixed;
+  margin-left: 75vh;
+} 
 #insert-commodity h2{
   text-align: center;
   margin-top: 20px;
@@ -401,6 +432,12 @@
   margin-bottom: 20px; 
 }
 
+/* 上傳圖片預覽圖 */
+#insert-commodity img{
+  width: 50vh;
+  height: 35vh;
+  margin: 0 auto;
+}
 /* 修改個人資料 */
 #update-member{
   position: fixed;
@@ -487,11 +524,6 @@
   font-size: 20px;
   cursor: pointer;
 }
-/* 上傳圖片預覽圖 */
-#insert-commodity img{
-  width: 50vh;
-  height: 35vh;
-}
 
 /* 管理員購物清單 */
 #shopping-list-admin{
@@ -524,4 +556,13 @@
 }
 #shopping-list-admin span{
   margin: 0 10px;
+}
+#commodity-list .update-commodity-button,
+#commodity-list .delete-commodity-button{
+  background: green;
+  padding: 0 10px;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 20px;
+  cursor: pointer;
 }

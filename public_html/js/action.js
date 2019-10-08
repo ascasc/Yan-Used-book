@@ -25,7 +25,12 @@ $(document).ready(function(){
   //修改會員資料
   var update_member_SQL_item_template= $('#update-member-SQL-item-template').html();
   var update_member_SQL_item_template_compile = Handlebars.compile(update_member_SQL_item_template);
-  
+  //新增商品與修改商品
+  var insert_commodity_item_template= $('#insert-commodity-item-template').html();
+  var insert_commodity_item_template_compile = Handlebars.compile(insert_commodity_item_template);
+//新增商品與修改商品
+var update_commodity_item_template= $('#update-commodity-item-template').html();
+var update_commodity_item_template_compile = Handlebars.compile(update_commodity_item_template);
   //管理員購物清單狀態箱子數字
   var shopping_list_admin_status_num=0;
   var panel={
@@ -163,11 +168,11 @@ $(document).ready(function(){
             cache: false,
             processData:false,
           }) 
-          .done(function(data, textStatus, jqXHR) {//註冊成功回傳到HTML成功的訊息
+          .done(function(data, textStatus, jqXHR) {//新增商品回傳到HTML成功的訊息
             $(insert_commodity.el).find('.close').click();
             window.location.reload();
         })
-          .fail(function(xhr, textStatus, errorThrown){//註冊錯誤回傳到HTML錯誤訊息
+          .fail(function(xhr, textStatus, errorThrown){//新增商品錯誤回傳到HTML錯誤訊息
             if(errorThrown !='Bad Request'){
               public_signup_login.alert_msg_off();
             }else{
@@ -216,6 +221,25 @@ $(document).ready(function(){
               if(errorThrown =='Bad Request'){
                 public_signup_login.alert_msg_success(xhr.responseText);
               }
+          });
+        }
+        if($(this).is('#update_book_form')){//修改商品
+          $.ajax({
+            url: "admin/update_book.php",
+            type: "POST",
+            data: new FormData(this),
+            contentType: false,
+            cache: false,
+            processData:false,
+          }) 
+          .done(function(data, textStatus, jqXHR) {//更新商品成功回傳到HTML成功的訊息
+            $(insert_commodity.el).find('.close').click();
+            public_signup_login.alert_msg_success(data.name);
+        })
+          .fail(function(xhr, textStatus, errorThrown){//更新商品錯誤回傳到HTML錯誤訊息
+            if(errorThrown =='Bad Request'){
+              public_signup_login.alert_msg_success(xhr.responseText);
+            }
           });
         }
     })
@@ -332,6 +356,12 @@ $(document).ready(function(){
           });
         }
         if($(this).is('.insert-commodity-nav')){//開啟管理員新增商品
+          $(insert_commodity.el).find('form').html('');
+          $(insert_commodity.el).find('form').removeAttr('id');
+          $(insert_commodity.el).find('form').attr('id','create_book_form');
+          $(insert_commodity.el).find('form').attr('action','admin/create_book.php');
+          $(insert_commodity.el).find('h2').html('新增商品');
+          $('#create_book_form').append(insert_commodity_item_template_compile);
           $(insert_commodity.el).addClass('open');
         }
         if($(this).is('.update-member-admin-nav')){//開啟管理員修改會員資料
@@ -373,7 +403,6 @@ $(document).ready(function(){
         $(this).closest(insert_commodity.el).removeClass('open');//關閉新增商品
         $(this).closest(insert_commodity.el).find('img').removeClass('open');//關閉上傳圖片的名字
         $(this).closest(update_member_admin.el).removeClass('open');//關閉管理員修改會員資料
-        $(this).siblings('#create_book_form ').find('input:not(.button)').val('');//關閉新增商品的val
         $(this).closest(shopping_list_admin.el).removeClass('open');//關閉管理員購物清單
         public_signup_login.alert_msg_off();//關閉視窗訊息
     })
@@ -420,6 +449,36 @@ $(document).ready(function(){
     .on('click', '#update-member .content li#update-map .button', function(e) {//管理員選擇修改資料
       e.preventDefault();
       window.open('ecpay/sample_CvsMap.php', '電子地圖', config='height=800,width=1020');
+    })
+    .on('click', '#commodity-list div', function(e) {//修改商品
+      e.preventDefault();
+      if($(this).is('.update-commodity-button')){
+        $(insert_commodity.el).find('form').html('');
+        $(insert_commodity.el).find('h2').html('修改商品');
+        $(insert_commodity.el).find('form').removeAttr('id');
+        $(insert_commodity.el).find('form').attr('id','update_book_form');
+        $(insert_commodity.el).find('form').attr('action','admin/update_book.php');
+        var id =$(this).siblings('.container').find('.content').data('id');
+        $.post("member/commodity_list.php", {id:id},
+          function (data, textStatus, jqXHR) {
+            $(insert_commodity.el).find('img')
+            .attr('src',data.img)
+            .addClass('open');
+            $('#update_book_form').append(update_commodity_item_template_compile(data));
+        });
+        $('#create_book_form').find('.button').attr('value','修改');
+        $(commodity_list.el).removeClass('open');
+        $(insert_commodity.el).addClass('open');
+      }
+      if($(this).is('.delete-commodity-button')){//刪除商品
+        var id =$(this).siblings('.container').find('.content').data('id');
+        $.post("admin/delete_book_form.php", {id:id},
+          function (data, textStatus, jqXHR) {
+            $('#commodity .container ul').find(data.id).remove();
+            $(commodity_list.el).removeClass('open');
+            public_signup_login.alert_msg_success(data.data);
+        });
+      }
     })
     .on('change','#insert-commodity form .file_img', function(e){//預覽上傳圖片
       const file = this.files[0];//將上傳檔案轉換為base64字串

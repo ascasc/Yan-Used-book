@@ -134,19 +134,7 @@
 		</div>
     <img src="" alt="insert-commodity-img">
     <form action="admin/create_book.php" enctype="multipart/form-data" id="create_book_form">
-      <label>圖片：</label>
-      <input type="file" name="file_img" class="file_img" id="file_img"><br>
-      <label>書名：</label>
-      <input type="text" name="book_name"><br>
-      <label>作者：</label>
-      <input type="text" name="author"><br>
-      <label>出版社：</label>
-      <input type="text" name="Publishing_house"><br>
-      <label>出版日期：</label>
-      <input type="date" name="Publication_date"><br>
-      <label>價錢：</label>
-      <input type="text" name="price"><br>
-      <input type="submit" value="新增" class="button">
+      <!-- 此為新增商品的Template部分 -->
     </form>
   </div>
   <?php }?>
@@ -172,8 +160,10 @@
   <div id="commodity">
     <!-- 商品清單 -->
     <div id="commodity-list"> 
-     <div class="close">x</div>
-     <?php if($login_status =='On'){?><div class="button">加入購物車</div> <?php }?>
+     <div class="close">x</div><br>
+     <?php if($login_status =='On' && $login_level =='member'){?><div class="button">加入購物車</div> <?php }?>
+     <?php if($login_status =='On' && $login_level =='admin'){?><div class="update-commodity-button">修改商品</div> <?php }?><br>
+     <?php if($login_status =='On' && $login_level =='admin'){?><div class="delete-commodity-button">刪除商品</div> <?php }?>
         <div class="container">
         <!-- 此為商品清單Template -->
         </div>
@@ -219,7 +209,15 @@
       <div class="author">作者：<span>{{author}}</span></div>
       <div class="Publishing-house">出版社：<span>{{Publishing_house}}</span></div>
       <div class="Publication-date">出版日期：<span>{{Publication_date}}</span></div>
-      <div class="price">NT${{price}}</div>
+      <div class="price">NT${{price}}</div><hr>
+      <h4>內容簡介</h4><br>
+      <div class="Introduction">{{Introduction}}</div><hr>
+      <h4>作者介紹</h4><br>
+      <div class="about_the_author">{{about_the_author}}</div><hr>
+      <h4>目錄</h4><br>
+      <div class="a_list">{{a_list}}</div><hr>
+      <h4>詳細資料</h4><br>
+      <div class="details">{{details}}</div>
     </div>
 </script>
 
@@ -292,7 +290,56 @@
     <div class="button">修改寄貨門市</div>
   </li>
 </script>
-<!-- 此為管理員與會員選單Template部分 -->
-<script id="Menu-Panel-member-item-template" type="text/x-handlebars-template">
+<!-- 此為新增商品的Template部分 -->
+<script id="insert-commodity-item-template" type="text/x-handlebars-template">
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&ensp;&ensp;
+      <input type="hidden" name="id"" value="{{id}}">
+      <label>圖片：</label>
+      <input type="file" name="file_img" class="file_img" id="file_img" accept="image/*"><br>
+      <label>書名：</label>&emsp;&ensp; 
+      <input type="text" name="book_name"><br>
+      <label>作者：</label>&emsp;&ensp; 
+      <input type="text" name="author"><br>
+      <label>出版社：</label>&ensp; 
+      <input type="text" name="Publishing_house"><br>
+      <label>出版日期：</label>
+      <input type="date" name="Publication_date"><br>
+      <label>價錢：</label>&emsp;&ensp;  
+      <input type="text" name="price"><br>
+      <label>簡介：</label><br>
+      <textarea name="Introduction"></textarea><br><br>
+      <label>作者介紹：</label><br>
+      <textarea name="about_the_author"></textarea><br><br>
+      <label>目錄：</label><br>
+      <textarea name="a_list"></textarea><br><br>
+      <label>詳細資料：</label><br>
+      <textarea name="details" class="details"></textarea><br><br>
+      <input type="submit" value="新增" class="button">
+</script>
+<!-- 此為更新商品的Template部分 -->
+<script id="update-commodity-item-template" type="text/x-handlebars-template">
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&ensp;&ensp;
+      <input type="hidden" name="id"" value="{{id}}">
+      <label>圖片：</label>
+      <input type="file" name="file_img" class="file_img" id="file_img" accept="image/*"><br>
+      <label>書名：</label>&emsp;&ensp; 
+      <input type="text" name="book_name" value="{{book_name}}"><br>
+      <label>作者：</label>&emsp;&ensp; 
+      <input type="text" name="author" value="{{price}}"><br>
+      <label>出版社：</label>&ensp; 
+      <input type="text" name="Publishing_house" value="{{Publishing_house}}"><br>
+      <label>出版日期：</label>
+      <input type="date" name="Publication_date" value="{{Publication_date}}"><br>
+      <label>價錢：</label>&emsp;&ensp;  
+      <input type="text" name="price" value="{{price}}"><br>
+      <label>簡介：</label><br>
+      <textarea name="Introduction">{{Introduction}}</textarea><br><br>
+      <label>作者介紹：</label><br>
+      <textarea name="about_the_author">{{about_the_author}}</textarea><br><br>
+      <label>目錄：</label><br>
+      <textarea name="a_list">{{a_list}}</textarea><br><br>
+      <label>詳細資料：</label><br>
+      <textarea name="details" class="details">{{details}}</textarea><br><br>
+      <input type="submit" value="更新" class="button">
 </script>
 <?php include('footer.php'); ?>
