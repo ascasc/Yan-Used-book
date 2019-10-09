@@ -29,35 +29,43 @@ else if(empty($_POST['price'])){
 else if(!preg_match('/^[0-9]+$/', $_POST['price'])){
     new HttpStatusCode(400, '請輸入價錢');
 }
-else{
+else{//可以新增到資料庫的時候
     $sourcePath = $_FILES['file_img']['tmp_name'];
     $targetPath1 = "../create_img/".$_FILES['file_img']['name'];
     $targetPath2 = "create_img/".$_FILES['file_img']['name'];
-    if(move_uploaded_file($sourcePath,$targetPath1)){
-        echo json_encode(['name'=>'上傳成功。']); 
+    if(move_uploaded_file($sourcePath,$targetPath1)){//照片上傳成功的時候
+        $sql = 'INSERT INTO commodity (book_name, author, Publishing_house, Publication_date, price, img, Introduction, about_the_author, a_list, details)
+        VALUES(:book_name, :author, :Publishing_house, :Publication_date, :price, :img, :Introduction, :about_the_author , :a_list, :details)';
+        $statement = $pdo->prepare($sql);
+        $statement->bindValue(':book_name', $_POST['book_name'], PDO::PARAM_STR);
+        $statement->bindValue(':author', $_POST['author'], PDO::PARAM_STR);
+        $statement->bindValue(':Publishing_house', $_POST['Publishing_house'], PDO::PARAM_STR);
+        $statement->bindValue(':Publication_date', $_POST['Publication_date'], PDO::PARAM_STR);
+        $statement->bindValue(':price', $_POST['price'], PDO::PARAM_INT);
+        $statement->bindValue(':img', $targetPath2, PDO::PARAM_STR);
+        $statement->bindValue(':Introduction', $_POST['Introduction'], PDO::PARAM_STR);
+        $statement->bindValue(':about_the_author', $_POST['about_the_author'], PDO::PARAM_STR);
+        $statement->bindValue(':a_list', $_POST['a_list'], PDO::PARAM_STR);
+        $statement->bindValue(':details', $_POST['details'], PDO::PARAM_STR);
+        $result = $statement->execute();
+        //新增商品開關狀態
+        $sql = 'INSERT INTO commodity_switch (commodity_id) VALUES(:commodity_id)';
+        $statement = $pdo->prepare($sql);
+        $statement->bindValue(':commodity_id', $pdo->lastInsertId(), PDO::PARAM_INT);
+        $result = $statement->execute();
+        //調用商品資料庫讓首頁同步
+        $sql = 'SELECT * FROM commodity INNER JOIN commodity_switch ON commodity.id=commodity_id ORDER BY commodity.id ASC';
+        $statement = $pdo->prepare($sql);
+        $result = $statement->execute();
+        $commodities= $statement->fetchAll(PDO::FETCH_ASSOC);
+        if($result){
+            echo json_encode(['data'=>$commodities,'name'=>'更新商品成功。']);
+        }else{
+            var_dump($pdo->errorInfo());
+        }
     }else{
         new HttpStatusCode(400, '上傳失敗');
     }
-    $sql = 'INSERT INTO commodity (book_name, author, Publishing_house, Publication_date, price, img, Introduction, about_the_author, a_list, details)
-    VALUES(:book_name, :author, :Publishing_house, :Publication_date, :price, :img, :Introduction, :about_the_author , :a_list, :details)';
-    $statement = $pdo->prepare($sql);
-    $statement->bindValue(':book_name', $_POST['book_name'], PDO::PARAM_STR);
-    $statement->bindValue(':author', $_POST['author'], PDO::PARAM_STR);
-    $statement->bindValue(':Publishing_house', $_POST['Publishing_house'], PDO::PARAM_STR);
-    $statement->bindValue(':Publication_date', $_POST['Publication_date'], PDO::PARAM_STR);
-    $statement->bindValue(':price', $_POST['price'], PDO::PARAM_INT);
-    $statement->bindValue(':img', $targetPath2, PDO::PARAM_STR);
-    $statement->bindValue(':Introduction', $_POST['Introduction'], PDO::PARAM_STR);
-    $statement->bindValue(':about_the_author', $_POST['about_the_author'], PDO::PARAM_STR);
-    $statement->bindValue(':a_list', $_POST['a_list'], PDO::PARAM_STR);
-    $statement->bindValue(':details', $_POST['details'], PDO::PARAM_STR);
-    $result = $statement->execute();
-    $sql = 'INSERT INTO commodity_switch (commodity_id) VALUES(:commodity_id)';
-    $statement = $pdo->prepare($sql);
-    $statement->bindValue(':commodity_id', $pdo->lastInsertId(), PDO::PARAM_INT);
-    $result = $statement->execute();
-    if(!$result){
-        var_dump($pdo->errorInfo());
-    }
+    
 }
 ?>

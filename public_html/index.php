@@ -325,7 +325,7 @@
       <label>書名：</label>&emsp;&ensp; 
       <input type="text" name="book_name" value="{{book_name}}"><br>
       <label>作者：</label>&emsp;&ensp; 
-      <input type="text" name="author" value="{{price}}"><br>
+      <input type="text" name="author" value="{{author}}"><br>
       <label>出版社：</label>&ensp; 
       <input type="text" name="Publishing_house" value="{{Publishing_house}}"><br>
       <label>出版日期：</label>

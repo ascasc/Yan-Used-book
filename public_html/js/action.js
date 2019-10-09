@@ -170,7 +170,13 @@ var update_commodity_item_template_compile = Handlebars.compile(update_commodity
           }) 
           .done(function(data, textStatus, jqXHR) {//新增商品回傳到HTML成功的訊息
             $(insert_commodity.el).find('.close').click();
-            window.location.reload();
+            //進入首頁顯示商品書單
+            commodity_UI='';
+            $(commodity.el).find('.container ul.row').html('');
+            $.each(data.data, function (index, commodity) {
+              commodity_UI = commodity_UI + commodity_template_compile(commodity);
+            });
+            $(commodity.el).find('.container ul.row').append(commodity_UI);
         })
           .fail(function(xhr, textStatus, errorThrown){//新增商品錯誤回傳到HTML錯誤訊息
             if(errorThrown !='Bad Request'){
@@ -235,7 +241,14 @@ var update_commodity_item_template_compile = Handlebars.compile(update_commodity
           .done(function(data, textStatus, jqXHR) {//更新商品成功回傳到HTML成功的訊息
             $(insert_commodity.el).find('.close').click();
             public_signup_login.alert_msg_success(data.name);
-        })
+            //進入首頁顯示商品書單
+            commodity_UI='';
+            $(commodity.el).find('.container ul.row').html('');
+            $.each(data.data, function (index, commodity) {
+              commodity_UI = commodity_UI + commodity_template_compile(commodity);
+            });
+            $(commodity.el).find('.container ul.row').append(commodity_UI);
+          })
           .fail(function(xhr, textStatus, errorThrown){//更新商品錯誤回傳到HTML錯誤訊息
             if(errorThrown =='Bad Request'){
               public_signup_login.alert_msg_success(xhr.responseText);
