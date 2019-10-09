@@ -41,6 +41,9 @@
       <li class="<?php if($login_level=='admin'){echo 'shopping-list-admin-nav';}else if($login_level=='member'){echo 'shopping-list-nav';}?>">
       <?php if($login_level=='admin'){echo '管理員購物清單';}else if($login_level=='member'){echo '購物清單';}?>
       </li> 
+      <?php if($login_level=='admin'){?>
+      <li class="open-close-commodity-switch-nav">啟動與關閉未付費的商品</li> 
+      <?php }?>
       <li class="sign-out">登出</li>
     </div>
   </div>
@@ -103,7 +106,6 @@
     <ul class="content">
       <!-- 此為資料庫資料放入修改資料Template部分 -->
     </ul>
-    
   </div>
   <?php }?>
   <!-- 此為管理員修改資料 -->
@@ -147,6 +149,7 @@
     </h2>
     <ul>
       <!-- 此為管理員購物清單Template部分產生 -->
+      
     </ul>
   </div>
   <?php }?>
@@ -233,7 +236,7 @@
 
 <!-- 管理員購物清單Template部分 -->
 <script id="shopping-list-item-template" type="text/x-handlebars-template"> 
-  <li data-id={{product_id}} class="<?php if($login_level=='admin') echo 'admin'; ?>">
+  <li data-id={{product_id}} class="<?php if($login_level=='admin') echo 'product_status'; ?>">
   <!-- 未付款.未出貨.未收貨.已收貨Template部分 -->
     <em class="pay_status">{{pay_status}}</em>  
     <em class="shipment_status">{{shipment_status}}</em>  
@@ -341,5 +344,14 @@
       <label>詳細資料：</label><br>
       <textarea name="details" class="details">{{details}}</textarea><br><br>
       <input type="submit" value="更新" class="button">
+</script>
+<script id="open-close-commodity-switch-item-template" type="text/x-handlebars-template">
+<li data-id={{commodity_id}} class="<?php if($login_level=='admin') echo 'commodity_switch'; ?>">
+<!-- 開啟動與關閉未付費的商品Template部分 -->
+  <span class="commodity_switch">{{switch}}</span>
+  <span>{{book_name}}</span>
+  <span>{{author}}</span>
+  <span>NT${{price}}</span>
+</li>
 </script>
 <?php include('footer.php'); ?>
