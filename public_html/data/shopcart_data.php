@@ -1,5 +1,5 @@
 <?php
-include('../../db.php');
+include(realpath("./").'../../db.php');
 
 try {
 	$pdo = new PDO("mysql:host=$db[host];dbname=$db[dbname];port=$db[port];charset=$db[charset]", $db['username'], $db['password']);

@@ -1,6 +1,6 @@
 <?php
 header('Content-Type: application/json; charset=utf-8');
-include('../../../db.php');
+include('../../db.php');
 include('../signup_login/public_signup_login.php');
 include('../HttpStatusCode.php');
 try {
