@@ -41,10 +41,11 @@ if(empty($shopcart_commodity_id)){
 	$result=$statement->execute();
 	//關掉首頁的商品
 	foreach ($shopcart as $key => $shopcarts) {
-		$sql = 'UPDATE commodity_switch SET switch=:switch WHERE commodity_id=:commodity_id';
+		$sql = 'UPDATE commodity_switch SET switch=:switch, switch_num=:switch_num WHERE commodity_id=:commodity_id';
 		$statement = $pdo->prepare($sql);
 		$statement->bindValue(':commodity_id', $shopcarts['commodity_id'], PDO::PARAM_INT);
-		$statement->bindValue(':switch', 0, PDO::PARAM_INT);
+		$statement->bindValue(':switch', '關閉', PDO::PARAM_INT);
+		$statement->bindValue(':switch_num', 0, PDO::PARAM_INT);
 		$result=$statement->execute();
 		//刪除其他使用者購物車存在的商品
 		$sql = 'DELETE FROM shopcart WHERE commodity_id=:commodity_id';

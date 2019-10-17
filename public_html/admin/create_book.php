@@ -59,7 +59,7 @@ else{//可以新增到資料庫的時候
         $result = $statement->execute();
         $commodities= $statement->fetchAll(PDO::FETCH_ASSOC);
         if($result){
-            echo json_encode(['data'=>$commodities,'name'=>'更新商品成功。']);
+            echo json_encode($commodities, JSON_NUMERIC_CHECK);
         }else{
             var_dump($pdo->errorInfo());
         }

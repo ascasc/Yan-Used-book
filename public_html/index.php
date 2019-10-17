@@ -195,7 +195,7 @@
 </script>
 <!-- 商品書單Template部分 -->
 <script id="commodity-item-template" type="text/x-handlebars-template">
-{{#if switch}}
+{{#if switch_num}}
   <li class="col-4 {{commodity_id}}" data-id="{{commodity_id}}">
     <img src="{{img}}" alt="{{img}}">
     <div class="book-name">{{book_name}}</div>

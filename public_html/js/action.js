@@ -179,10 +179,11 @@ $(document).ready(function(){
             //進入首頁顯示商品書單
             commodity_UI='';
             $(commodity.el).find('.container ul.row').html('');
-            $.each(data.data, function (index, commodity) {
+            $.each(data, function (index, commodity) {
               commodity_UI = commodity_UI + commodity_template_compile(commodity);
             });
             $(commodity.el).find('.container ul.row').append(commodity_UI);
+            public_signup_login.alert_msg_success('新增商品成功');
           })
           .fail(function(xhr, textStatus, errorThrown){//新增商品錯誤回傳到HTML錯誤訊息
             if(errorThrown !='Bad Request'){
@@ -487,7 +488,15 @@ $(document).ready(function(){
           commodity_switch_num=0;
         }
         $(this).find('.commodity_switch').html(commodity_switch);
-        $.post("admin/update_commodity_switch.php", {id:id,commodity_switch:commodity_switch});
+        $.post("admin/update_commodity_switch.php", {id:id,commodity_switch_num:commodity_switch_num, commodity_switch:commodity_switch},
+            function (data, textStatus, jqXHR) {
+              commodity_UI='';
+              $(commodity.el).find('.container ul.row').html('');
+              $.each(data, function (index, commodity) {
+                commodity_UI = commodity_UI + commodity_template_compile(commodity);
+              });
+              $(commodity.el).find('.container ul.row').append(commodity_UI);
+          });
       }
     })
     .on('click', '#update-member .content li#update-map .button', function(e) {//管理員選擇修改資料
