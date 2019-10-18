@@ -501,6 +501,7 @@ $(document).ready(function(){
     })
     .on('click', '#update-member .content li#update-map .button', function(e) {//管理員選擇修改資料
       e.preventDefault();
+      $(update_member.el).find('.close').click();
       window.open('ecpay/sample_CvsMap.php', '電子地圖', config='height=800,width=1020');
     })
     .on('click', '#commodity-list div', function(e) {//修改商品
