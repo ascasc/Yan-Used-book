@@ -3,11 +3,15 @@ session_start();
 $login_status;
 $login_level;
 if(isset($_SESSION['customer'])){
-    $login_status ='On';
     if($_SESSION['customer']['m_level'] == 'member'){
         $login_level ='member';
-    }else{
+        $login_status ='On';
+    }else if($_SESSION['customer']['m_level'] == 'admin'){
         $login_level ='admin';
+        $login_status ='On';
+    }else{
+        $login_level ='';
+        $login_status ='Off';
     }
 }else if(!isset($_SESSION['customer'])){
     $login_status ='Off';

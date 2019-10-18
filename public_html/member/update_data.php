@@ -49,9 +49,11 @@ if(empty($_POST['name'])){//姓名不可為空
     $fetchAll=$statement->fetchAll(PDO::FETCH_ASSOC);
     foreach ($fetchAll as $key => $row) {
         $_SESSION['customer'] = [
+            'id'=>$row['id'],
             'name'=>$row['name'],
             'email'=>$row['email'],
             'phone'=>$row['phone'],
+            'm_level'=>$row['m_level'],
         ];
     }
 	if($result){
