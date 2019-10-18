@@ -41,6 +41,19 @@ if(empty($_POST['name'])){//姓名不可為空
 	$statement->bindValue(':phone', $_POST['phone'], PDO::PARAM_STR);
 	$result = $statement->execute();
 	$customer_data= $statement->fetch(PDO::FETCH_ASSOC);
+
+	$sql = 'SELECT * FROM customer_data WHERE email=:email';
+    $statement=$pdo->prepare($sql);
+    $statement->bindValue(':email', $_POST['email'], PDO::PARAM_STR);
+    $statement->execute();
+    $fetchAll=$statement->fetchAll(PDO::FETCH_ASSOC);
+    foreach ($fetchAll as $key => $row) {
+        $_SESSION['customer'] = [
+            'name'=>$row['name'],
+            'email'=>$row['email'],
+            'phone'=>$row['phone'],
+        ];
+    }
 	if($result){
 		echo json_encode(['data'=>'修改資料成功。']);
 	}else{
