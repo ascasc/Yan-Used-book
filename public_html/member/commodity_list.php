@@ -8,7 +8,7 @@ try {
 	echo "Database connection failed.";
 	exit;
 }
-$sql = 'SELECT id, book_name,author, Publishing_house, Publication_date, price, img, Introduction,
+$sql = 'SELECT id, book_name,author, Publishing_house, Publication_date, price, img1, img2, Introduction,
 about_the_author, a_list, details FROM commodity WHERE id=:id';
 $statement = $pdo->prepare($sql);
 $statement->bindValue(':id', $_POST['id'], PDO::PARAM_INT);
@@ -17,7 +17,7 @@ $commodity = $statement->fetch(PDO::FETCH_ASSOC);
 
 if($result){
     echo json_encode(['id'=>$commodity['id'], 'book_name'=> $commodity['book_name'], 'author'=> $commodity['author'],'Publishing_house'=> $commodity['Publishing_house']
-	,'Publication_date'=> $commodity['Publication_date'],'price'=> $commodity['price'],'img'=> $commodity['img'],'Introduction'=> $commodity['Introduction']
+	,'Publication_date'=> $commodity['Publication_date'],'price'=> $commodity['price'],'img1'=> $commodity['img1'],'img2'=> $commodity['img2'], 'Introduction'=> $commodity['Introduction']
 	,'about_the_author'=>$commodity['about_the_author'],'a_list'=>$commodity['a_list'],'details'=>$commodity['details']]);
 }
 ?>

@@ -28,12 +28,15 @@ else if(!preg_match('/^[0-9]+$/', $_POST['price'])){
     new HttpStatusCode(400, '請輸入價錢');
 }
 else{//可以更新到資料庫的時候
-    $sourcePath = $_FILES['file_img']['tmp_name'];
-    $targetPath1 = "../create_img/".$_FILES['file_img']['name'];
-    $targetPath2 = "create_img/".$_FILES['file_img']['name'];
-    if(!empty($sourcePath)){//照片有上傳的時候
-        if(move_uploaded_file($sourcePath,$targetPath1)){//照片上傳成功的時候
-            $sql = 'UPDATE commodity SET book_name=:book_name, author=:author, Publishing_house=:Publishing_house, Publication_date=:Publication_date, price=:price, img=:img, Introduction=:Introduction, about_the_author=:about_the_author, a_list=:a_list, details=:details WHERE id=:id';
+    $sourcePath1 = $_FILES['file_img1']['tmp_name'];//前封面圖片
+    $targetPath1 = "../create_img/".$_FILES['file_img1']['name'];
+    $targetPath1_2 = "create_img/".$_FILES['file_img1']['name'];
+    $sourcePath2 = $_FILES['file_img2']['tmp_name'];//後封面圖片
+    $targetPath2 = "../create_img/".$_FILES['file_img2']['name'];
+    $targetPath2_2 = "create_img/".$_FILES['file_img2']['name'];
+    if(!empty($sourcePath1) && !empty($sourcePath2)){//照片有上傳的時候
+        if(move_uploaded_file($sourcePath1,$targetPath1) && move_uploaded_file($sourcePath2,$targetPath2)){//照片上傳成功的時候
+            $sql = 'UPDATE commodity SET book_name=:book_name, author=:author, Publishing_house=:Publishing_house, Publication_date=:Publication_date, price=:price, img1=:img1, img2=:img2, Introduction=:Introduction, about_the_author=:about_the_author, a_list=:a_list, details=:details WHERE id=:id';
             $statement = $pdo->prepare($sql);
             $statement->bindValue(':id', $_POST['id'], PDO::PARAM_INT);
             $statement->bindValue(':book_name', $_POST['book_name'], PDO::PARAM_STR);
@@ -41,7 +44,8 @@ else{//可以更新到資料庫的時候
             $statement->bindValue(':Publishing_house', $_POST['Publishing_house'], PDO::PARAM_STR);
             $statement->bindValue(':Publication_date', $_POST['Publication_date'], PDO::PARAM_STR);
             $statement->bindValue(':price', $_POST['price'], PDO::PARAM_INT);
-            $statement->bindValue(':img', $targetPath2, PDO::PARAM_STR);
+            $statement->bindValue(':img1', $targetPath1_2, PDO::PARAM_STR);
+            $statement->bindValue(':img2', $targetPath2_2, PDO::PARAM_STR);
             $statement->bindValue(':Introduction', $_POST['Introduction'], PDO::PARAM_STR);
             $statement->bindValue(':about_the_author', $_POST['about_the_author'], PDO::PARAM_STR);
             $statement->bindValue(':a_list', $_POST['a_list'], PDO::PARAM_STR);
@@ -58,10 +62,8 @@ else{//可以更新到資料庫的時候
                 var_dump($pdo->errorInfo());
             }
         }
-        else{//照片上傳失敗的時候
-            new HttpStatusCode(400,'照片上傳失敗。');
-        }
-    }else if(empty($sourcePath)){//照片沒有上傳的時候
+        
+    }else if(empty($sourcePath1) && empty($sourcePath2)){//照片沒有上傳的時候
         $sql = 'UPDATE commodity SET book_name=:book_name, author=:author, Publishing_house=:Publishing_house, Publication_date=:Publication_date, price=:price, Introduction=:Introduction, about_the_author=:about_the_author, a_list=:a_list, details=:details WHERE id=:id';
         $statement = $pdo->prepare($sql);
         $statement->bindValue(':id', $_POST['id'], PDO::PARAM_INT);
@@ -85,6 +87,8 @@ else{//可以更新到資料庫的時候
         }else{
             var_dump($pdo->errorInfo());
         }
+    }else{//照片上傳失敗的時候
+        new HttpStatusCode(400,'圖片上傳失敗，請上傳完整的前後封面圖片。');
     }   
 }
 

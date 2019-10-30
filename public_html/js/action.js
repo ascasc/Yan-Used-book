@@ -408,8 +408,9 @@ $(document).ready(function(){
           });
         }
         if($(this).is('.sign-out')){//登出
-          $.post("signup_login/sign-out.php");
-          window.location.reload();
+          $.post("signup_login/sign-out.php",function (data, textStatus, jqXHR) {
+              window.location.reload();
+          });
         }
         if($(this).is('.shopping-list-admin-nav')){//開管理員購物清單
           $(shopping_list_admin.el).addClass('open');
@@ -515,8 +516,11 @@ $(document).ready(function(){
         var id =$(this).siblings('.container').find('.content').data('id');
         $.post("member/commodity_list.php", {id:id},
           function (data, textStatus, jqXHR) {
-            $(insert_commodity.el).find('img')
-            .attr('src',data.img)
+            $(insert_commodity.el).find('.img1')//前封面圖片
+            .attr('src',data.img1)
+            .addClass('open');
+            $(insert_commodity.el).find('.img2')//後封面圖片
+            .attr('src',data.img2)
             .addClass('open');
             $('#update_book_form').append(update_commodity_item_template_compile(data));
         });
@@ -534,12 +538,24 @@ $(document).ready(function(){
         });
       }
     })
-    .on('change','#insert-commodity form .file_img', function(e){//預覽上傳圖片
+    .on('change','#insert-commodity form .file_img1', function(e){//預覽上傳圖片
       const file = this.files[0];//將上傳檔案轉換為base64字串
           
       const fr = new FileReader();//建立FileReader物件
       fr.onload = function (e) {
-        $('#insert-commodity').find('img')
+        $('#insert-commodity').find('.img1')
+        .addClass('open')
+        .attr('src', e.target.result);//读取的结果放入圖片
+      };
+      // 使用 readAsDataURL 將圖片轉成 Base64
+      fr.readAsDataURL(file);
+    })
+    .on('change','#insert-commodity form .file_img2', function(e){//預覽上傳圖片
+      const file = this.files[0];//將上傳檔案轉換為base64字串
+          
+      const fr = new FileReader();//建立FileReader物件
+      fr.onload = function (e) {
+        $('#insert-commodity').find('.img2')
         .addClass('open')
         .attr('src', e.target.result);//读取的结果放入圖片
       };

@@ -9,7 +9,7 @@ try {
 	exit;
 }
 
-if(!is_uploaded_file($_FILES['file_img']['tmp_name'])){
+if(!is_uploaded_file($_FILES['file_img1']['tmp_name'])){
     new HttpStatusCode(400,'請選擇檔案');
 }else if(empty($_POST['book_name'])){
     new HttpStatusCode(400, '書名不可為空');
@@ -30,19 +30,23 @@ else if(!preg_match('/^[0-9]+$/', $_POST['price'])){
     new HttpStatusCode(400, '請輸入價錢');
 }
 else{//可以新增到資料庫的時候
-    $sourcePath = $_FILES['file_img']['tmp_name'];
-    $targetPath1 = "../create_img/".$_FILES['file_img']['name'];
-    $targetPath2 = "create_img/".$_FILES['file_img']['name'];
-    if(move_uploaded_file($sourcePath,$targetPath1)){//照片上傳成功的時候
-        $sql = 'INSERT INTO commodity (book_name, author, Publishing_house, Publication_date, price, img, Introduction, about_the_author, a_list, details)
-        VALUES(:book_name, :author, :Publishing_house, :Publication_date, :price, :img, :Introduction, :about_the_author , :a_list, :details)';
+    $sourcePath1 = $_FILES['file_img1']['tmp_name'];//前封面圖片
+    $targetPath1 = "../create_img/".$_FILES['file_img1']['name'];
+    $targetPath1_2 = "create_img/".$_FILES['file_img1']['name'];
+    $sourcePath2 = $_FILES['file_img2']['tmp_name'];//後封面圖片
+    $targetPath2 = "../create_img/".$_FILES['file_img2']['name'];
+    $targetPath2_2 = "create_img/".$_FILES['file_img2']['name'];
+    if(move_uploaded_file($sourcePath1,$targetPath1) && move_uploaded_file($sourcePath2,$targetPath2)){//照片上傳成功的時候
+        $sql = 'INSERT INTO commodity (book_name, author, Publishing_house, Publication_date, price, img1, img2, Introduction, about_the_author, a_list, details)
+        VALUES(:book_name, :author, :Publishing_house, :Publication_date, :price, :img1, :img2, :Introduction, :about_the_author , :a_list, :details)';
         $statement = $pdo->prepare($sql);
         $statement->bindValue(':book_name', $_POST['book_name'], PDO::PARAM_STR);
         $statement->bindValue(':author', $_POST['author'], PDO::PARAM_STR);
         $statement->bindValue(':Publishing_house', $_POST['Publishing_house'], PDO::PARAM_STR);
         $statement->bindValue(':Publication_date', $_POST['Publication_date'], PDO::PARAM_STR);
         $statement->bindValue(':price', $_POST['price'], PDO::PARAM_INT);
-        $statement->bindValue(':img', $targetPath2, PDO::PARAM_STR);
+        $statement->bindValue(':img1', $targetPath1_2, PDO::PARAM_STR);
+        $statement->bindValue(':img2', $targetPath2_2, PDO::PARAM_STR);
         $statement->bindValue(':Introduction', $_POST['Introduction'], PDO::PARAM_STR);
         $statement->bindValue(':about_the_author', $_POST['about_the_author'], PDO::PARAM_STR);
         $statement->bindValue(':a_list', $_POST['a_list'], PDO::PARAM_STR);
@@ -64,7 +68,7 @@ else{//可以新增到資料庫的時候
             var_dump($pdo->errorInfo());
         }
     }else{
-        new HttpStatusCode(400, '上傳失敗');
+        new HttpStatusCode(400, '圖片上傳失敗，請上傳完整的前後封面圖片。');
     }
     
 }

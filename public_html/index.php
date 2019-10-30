@@ -47,7 +47,6 @@
       <li class="sign-out">登出</li>
     </div>
   </div>
-  
   <div id="slider">
     <img src="img/bg.jpeg" alt="bg.jpeg">
     <h1>歡迎來到 Yan二手書店</h1>
@@ -66,7 +65,7 @@
         <label>密碼</label><br>
         <input type="password" name="password">
         <input type="submit" value="登入" class="button">
-      <center><a href="#">忘記密碼?</a></center>
+      <center><a href="#" onclick="window.open('forget_password.php', '忘記密碼', config='height=500,width=800');">忘記密碼?</a></center>
     </form>
   </div>
   <?php }?>
@@ -134,7 +133,8 @@
     <div class="error-msg">
 		  <div class="alert alert-danger">error</div>
 		</div>
-    <img src="" alt="insert-commodity-img">
+    <img src="" alt="img1" class="img1"><br>
+    <img src="" alt="img2" class="img2"><br>
     <form action="admin/create_book.php" enctype="multipart/form-data" id="create_book_form">
       <!-- 此為新增商品的Template部分 -->
     </form>
@@ -179,6 +179,32 @@
       </ul>
     </div>
   </div>
+  <!-- Load Facebook SDK for JavaScript -->
+  <div id="fb-root"></div>
+      <script>
+        window.fbAsyncInit = function() {
+          FB.init({
+            xfbml            : true,
+            version          : 'v4.0'
+          });
+        };
+
+        (function(d, s, id) {
+        var js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id)) return;
+        js = d.createElement(s); js.id = id;
+        js.src = 'https://connect.facebook.net/zh_TW/sdk/xfbml.customerchat.js';
+        fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));</script>
+
+      <!-- Your customer chat code -->
+      <div class="fb-customerchat"
+        attribution=setup_tool
+        page_id="102940757809757"
+        theme_color="#67b868"
+        logged_in_greeting="Hi,歡迎來到Yan二手書店,如有什麼問題歡迎諮詢."
+        logged_out_greeting="Hi,歡迎來到Yan二手書店,如有什麼問題歡迎諮詢.">
+  </div>
 </div>
 <!-- 導覽列判斷管理員與會員 -->
 <script id="nav-Panel-item-template" type="text/x-handlebars-template">
@@ -197,7 +223,7 @@
 <script id="commodity-item-template" type="text/x-handlebars-template">
 {{#if switch_num}}
   <li class="col-4 {{commodity_id}}" data-id="{{commodity_id}}">
-    <img src="{{img}}" alt="{{img}}">
+    <img src="{{img1}}" alt="{{img1}}">
     <div class="book-name">{{book_name}}</div>
     <div class="price">NT${{price}}</div>
   </li>
@@ -206,7 +232,8 @@
 
 <!-- 商品清單Template部分 -->
 <script id="commodity-list-item-template" type="text/x-handlebars-template">
-  <img src="{{img}}" alt="{{img}}">
+  <img src="{{img1}}" alt="{{img1}}">
+  <img src="{{img2}}" alt="{{img2}}">
     <div class="content" data-id="{{id}}">
       <div class="book-name">{{book_name}}</div>
       <div class="author">作者：<span>{{author}}</span></div>
@@ -227,7 +254,7 @@
 <!-- 購物車Template部分 -->
 <script id="shopcart-Panel-item-template" type="text/x-handlebars-template">
   <li data-id="{{id}}">
-    <img src="{{img}}"" alt="{{img}}">
+    <img src="{{img1}}"" alt="{{img1}}">
     <div class="content">{{book_name}}</div>
     <div class="price">NT${{price}}</div>
     <div class="delete" data-id="{{id}}">刪除</div>
@@ -295,10 +322,13 @@
 </script>
 <!-- 此為新增商品的Template部分 -->
 <script id="insert-commodity-item-template" type="text/x-handlebars-template">
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&ensp;&ensp;
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&ensp;&ensp;
       <input type="hidden" name="id"" value="{{id}}">
-      <label>圖片：</label>
-      <input type="file" name="file_img" class="file_img" id="file_img" accept="image/*"><br>
+      <label>前封面圖片：</label>
+      <input type="file" name="file_img1" class="file_img1" id="file_img1" accept="image/*"><br>
+      &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&ensp;&ensp;
+      <label>後封面圖片：</label>
+      <input type="file" name="file_img2" class="file_img2" id="file_img2" accept="image/*"><br>
       <label>書名：</label>&emsp;&ensp; 
       <input type="text" name="book_name"><br>
       <label>作者：</label>&emsp;&ensp; 
@@ -321,10 +351,13 @@
 </script>
 <!-- 此為更新商品的Template部分 -->
 <script id="update-commodity-item-template" type="text/x-handlebars-template">
-&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&ensp;&ensp;
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&ensp;&ensp;&ensp;
       <input type="hidden" name="id"" value="{{id}}">
-      <label>圖片：</label>
-      <input type="file" name="file_img" class="file_img" id="file_img" accept="image/*"><br>
+      <label>前封面圖片：</label>
+      <input type="file" name="file_img1" class="file_img1" id="file_img1" accept="image/*"><br>
+      &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&ensp;&ensp;&ensp;&ensp;&emsp;
+      <label>後封面圖片：</label>
+      <input type="file" name="file_img2" class="file_img2" id="file_img2" accept="image/*"><br>
       <label>書名：</label>&emsp;&ensp; 
       <input type="text" name="book_name" value="{{book_name}}"><br>
       <label>作者：</label>&emsp;&ensp; 
